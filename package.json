@@ -5,10 +5,14 @@
   "repository": "git@github.com:adammertel/gehir.isis-network.git",
   "author": "adammertel <mertel.adam@gmail.com>",
   "scripts": {
-    "start": "light-server -o -s ./preview -w './data/**.geojson, ./preview/**.**'"
+    "start": "light-server -o -s ./ -w './data/**.geojson, ./**.**, ./index.html'"
   },
   "license": "MIT",
   "dependencies": {
+    "@turf/boolean-equal": "^6.0.1",
+    "@turf/line-intersect": "^6.0.2",
+    "@turf/line-segment": "^6.0.2",
+    "@turf/line-split": "^5.1.5",
     "geojson": "^0.5.0",
     "light-server": "^2.6.0",
     "turf": "^3.0.14"
