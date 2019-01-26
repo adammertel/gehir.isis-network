@@ -33,20 +33,14 @@
       ).addTo(map);
 
       const path = "./../data/";
-      // intersections
-      $.getJSON(path + "intersection.geojson", function(data) {
-        L.geoJSON(data).addTo(map);
-      });
 
-      // roads
-      $.getJSON(path + "/original/links.geojson", function(data) {
-        L.geoJSON(data).addTo(map);
-      });
+      const addData = file => {
+        $.getJSON(path + file + ".geojson", data => L.geoJSON(data).addTo(map));
+      };
 
-      // roads
-      $.getJSON(path + "/original/nodes.geojson", function(data) {
-        L.geoJSON(data).addTo(map);
-      });
+      addData("deadends");
+      addData("original/links");
+      //addData("original/nodes");
     });
   </script>
 </html>
