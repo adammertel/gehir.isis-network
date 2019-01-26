@@ -8,7 +8,7 @@ var equal = require("@turf/boolean-equal");
 var path = "./../data/";
 // reading file
 const roads = JSON.parse(
-  fs.readFileSync(path + "original/roads.geojson", "utf8")
+  fs.readFileSync(path + "original/links.geojson", "utf8")
 );
 
 const roadFeatures = [];
@@ -60,7 +60,4 @@ const collection = turf.featureCollection(crossroads);
 //const collection = turf.featureCollection(segments);
 
 // saving file
-fs.writeFileSync(
-  path + "roads_intersection.geojson",
-  JSON.stringify(collection)
-);
+fs.writeFileSync(path + "intersection.geojson", JSON.stringify(collection));

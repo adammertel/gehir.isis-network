@@ -34,12 +34,17 @@
 
       const path = "./../data/";
       // intersections
-      $.getJSON(path + "roads_intersection.geojson", function(data) {
+      $.getJSON(path + "intersection.geojson", function(data) {
         L.geoJSON(data).addTo(map);
       });
 
       // roads
-      $.getJSON(path + "/original/roads.geojson", function(data) {
+      $.getJSON(path + "/original/links.geojson", function(data) {
+        L.geoJSON(data).addTo(map);
+      });
+
+      // roads
+      $.getJSON(path + "/original/nodes.geojson", function(data) {
         L.geoJSON(data).addTo(map);
       });
     });
