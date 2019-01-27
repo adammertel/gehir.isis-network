@@ -4,6 +4,7 @@ var lintersect = require("@turf/line-intersect");
 var lSplit = require("@turf/line-split");
 var lSegment = require("@turf/line-segment");
 var equal = require("@turf/boolean-equal");
+var clean = require("@turf/clean-coords").default;
 
 var path = "./../data/";
 // reading file
@@ -34,6 +35,39 @@ const equalPoints = (p1, p2) => {
   const cs1 = p1.geometry.coordinates;
   const cs2 = p2.geometry.coordinates;
   return cs1[0] === cs2[0] && cs1[1] === cs2[1];
+};
+
+// takes two line features and return one joined
+const joinLines = (l1, l2) => {
+  const coords = [];
+
+  const cs1 = l1.geometry.coordinates;
+  const cs2 = l2.geometry.coordinates;
+  let revertFirst = false;
+  let revertSecond = false;
+  cs1.forEach((c1, ci1) => {
+    cs2.forEach((c2, ci2) => {
+      if (c1[0] === c2[0] && c1[1] === c2[1]) {
+        if (ci1 === 0) {
+          revertFirst = true;
+        }
+        if (ci2 === l2.geometry.coordinates.length - 1) {
+          revertSecond = true;
+        }
+      }
+    });
+  });
+
+  if (revertFirst) {
+    cs1.reverse();
+  }
+  if (revertSecond) {
+    cs2.reverse();
+  }
+
+  cs1.forEach(c1 => coords.push(c1));
+  cs2.filter((c, ci) => ci !== 0).forEach(c2 => coords.push(c2));
+  return turf.lineString(coords);
 };
 
 //console.log(JSON.stringify(roadFeatures));
@@ -113,8 +147,34 @@ deadEnds.forEach(f => {
 });
 
 // join route and road segments based on nodes
+segments.forEach((rf1, rf1i) => {
+  segments.forEach((rf2, rf2i) => {
+    if (rf1i !== rf2i) {
+      const intersection = lintersect.default(rf1, rf2);
 
-//
+      // if there is an intersection
+      if (intersection.features.length) {
+        const intersect = intersection.features[0];
+
+        // if the intersection is not node
+        if (!nodes.some(n => equalPoints(n, intersect))) {
+          rf1.geometry = joinLines(rf1, rf2).geometry;
+          rf2.geometry.coordinates = [[]];
+        }
+      }
+    }
+  });
+});
+
+const segmentsFiltered = segments
+  .filter(s => s.geometry.coordinates[0].length > 1)
+  .map(s => {
+    return {
+      type: s.type,
+      geometry: s.geometry,
+      properties: s.properties
+    };
+  });
 
 const saveFile = (name, data) => {
   fs.writeFileSync(
@@ -125,4 +185,4 @@ const saveFile = (name, data) => {
 
 // saving files
 saveFile("nodes", nodes);
-saveFile("edges", edges);
+saveFile("edges", segmentsFiltered);
