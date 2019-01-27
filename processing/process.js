@@ -7,20 +7,19 @@ var equal = require("@turf/boolean-equal");
 
 var path = "./../data/";
 // reading file
-const roads = JSON.parse(
-  fs.readFileSync(path + "original/roads.geojson", "utf8")
-);
+const readJSON = fileName =>
+  JSON.parse(fs.readFileSync(path + fileName + ".geojson", "utf8"));
 
-const routes = JSON.parse(
-  fs.readFileSync(path + "original/routes.geojson", "utf8")
-);
+const roads = readJSON("original/roads");
+const routes = readJSON("original/routes");
 
-const edges = turf.featureCollection(
-  [].concat(...[roads.features, routes.features])
-);
+const ports = readJSON("original/ports");
+const settlements = readJSON("original/settlements");
+
+const edges = [].concat(...[roads.features, routes.features]);
 
 const roadFeatures = [];
-edges.features.forEach(feat => {
+edges.forEach(feat => {
   feat.geometry.coordinates.forEach(coord => {
     roadFeatures.push(turf.lineString(coord));
   });
@@ -83,20 +82,41 @@ segments.forEach((s1, si1) => {
   });
 });
 
-const collIntersections = turf.featureCollection(crossroads);
-const collDeadEnds = turf.featureCollection(deadEnds);
+// join settlements, ports, crossroads and dead ends
+const nodes = [];
 
-// join crossroads and original nodes (settlements, ports)
+ports.features.forEach(f => {
+  f.properties.type = "port";
+  nodes.push(turf.point(f.geometry.coordinates, f.properties));
+});
+settlements.features.forEach(f => {
+  f.properties.type = "settlement";
+  nodes.push(turf.point(f.geometry.coordinates, f.properties));
+});
+crossroads.forEach(f => {
+  f.properties.type = "crossroad";
+  if (!nodes.some(n => equal.default(n, f))) {
+    nodes.push(turf.point(f.geometry.coordinates, f.properties));
+  }
+});
+deadEnds.forEach(f => {
+  f.properties.type = "dead end";
+  if (!nodes.some(n => equal.default(n, f))) {
+    nodes.push(turf.point(f.geometry.coordinates, f.properties));
+  }
+});
 
 // join route and road segments based on nodes
 
 //
 
 const saveFile = (name, data) => {
-  fs.writeFileSync(path + name + ".geojson", JSON.stringify(data));
+  fs.writeFileSync(
+    path + name + ".geojson",
+    JSON.stringify(turf.featureCollection(data))
+  );
 };
 
 // saving files
-saveFile("deadends", collDeadEnds);
-saveFile("intersections", collIntersections);
+saveFile("nodes", nodes);
 saveFile("edges", edges);
