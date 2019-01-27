@@ -5,6 +5,7 @@ var lSplit = require("@turf/line-split");
 var lSegment = require("@turf/line-segment");
 var equal = require("@turf/boolean-equal");
 var clean = require("@turf/clean-coords").default;
+var length = require("@turf/length").default;
 
 var path = "./../data/";
 // reading file
@@ -150,6 +151,7 @@ deadEnds.forEach(f => {
 segments.forEach((rf1, rf1i) => {
   segments.forEach((rf2, rf2i) => {
     if (rf1i !== rf2i) {
+      // TODO: own algorithm
       const intersection = lintersect.default(rf1, rf2);
 
       // if there is an intersection
@@ -175,6 +177,11 @@ const segmentsFiltered = segments
       properties: s.properties
     };
   });
+segmentsFiltered.forEach(s => {
+  s.properties.from = 0;
+  s.properties.to = 0;
+  s.properties.length = length(s);
+});
 
 const saveFile = (name, data) => {
   fs.writeFileSync(
