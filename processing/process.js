@@ -30,6 +30,12 @@ roadFeatures.forEach(f => {
   lSegment.default(f).features.forEach(s => segments.push(s));
 });
 
+const equalPoints = (p1, p2) => {
+  const cs1 = p1.geometry.coordinates;
+  const cs2 = p2.geometry.coordinates;
+  return cs1[0] === cs2[0] && cs1[1] === cs2[1];
+};
+
 //console.log(JSON.stringify(roadFeatures));
 
 const intersections = [];
@@ -95,13 +101,13 @@ settlements.features.forEach(f => {
 });
 crossroads.forEach(f => {
   f.properties.type = "crossroad";
-  if (!nodes.some(n => equal.default(n, f))) {
+  if (!nodes.some(n => equalPoints(n, f))) {
     nodes.push(turf.point(f.geometry.coordinates, f.properties));
   }
 });
 deadEnds.forEach(f => {
-  f.properties.type = "dead end";
-  if (!nodes.some(n => equal.default(n, f))) {
+  f.properties.type = "deadend";
+  if (!nodes.some(n => equalPoints(n, f))) {
     nodes.push(turf.point(f.geometry.coordinates, f.properties));
   }
 });
