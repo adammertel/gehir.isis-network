@@ -34,12 +34,49 @@
 
       const path = "./../data/";
 
-      const addData = file => {
-        $.getJSON(path + file + ".geojson", data => L.geoJSON(data).addTo(map));
+      const addData = (file, options = {}) => {
+        $.getJSON(path + file + ".geojson", data => {
+          L.geoJSON(data, options)
+            .addTo(map)
+            .bringToBack();
+        });
       };
 
-      addData("deadends");
-      addData("original/links");
+      const nodeOptions = {
+        port: {
+          radius: 5,
+          color: "blue",
+          fill: "navyblue"
+        },
+        settlement: {
+          radius: 5,
+          fill: "orange",
+          color: "orange"
+        },
+        crossroad: {
+          radius: 3,
+          fill: "black",
+          color: "black"
+        },
+        deadend: {
+          radius: 3,
+          fill: "grey",
+          color: "grey"
+        }
+      };
+
+      addData("nodes", {
+        pointToLayer: f => {
+          const coords = f.geometry.coordinates;
+          const color = {};
+          return L.circleMarker([coords[1], coords[0]], {
+            ...nodeOptions[f.properties.type],
+            ...{ fillOpacity: 0 }
+          });
+        }
+      });
+      addData("edges");
+
       //addData("original/nodes");
     });
   </script>
