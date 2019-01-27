@@ -77,7 +77,6 @@ segments.forEach((s1, si1) => {
           (c[0] === c2[1][0] && c[1] === c2[1][1])
         );
       });
-    console.log(crosses.length);
     if (!crosses.length) {
       deadEnds.push(turf.point(c));
     }
