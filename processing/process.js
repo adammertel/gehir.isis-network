@@ -8,6 +8,14 @@ var clean = require("@turf/clean-coords").default;
 var length = require("@turf/length").default;
 
 var path = "./../data/";
+
+let lastTime = new Date().valueOf();
+const report = text => {
+  const now = new Date().valueOf();
+  console.log(text, "in", (now - lastTime) / 1000, "s");
+  lastTime = new Date().valueOf();
+};
+
 // reading file
 const readJSON = fileName =>
   JSON.parse(fs.readFileSync(path + fileName + ".geojson", "utf8"));
@@ -26,11 +34,13 @@ edges.forEach(feat => {
     roadFeatures.push(turf.lineString(coord));
   });
 });
+report("files read");
 
 const segments = [];
 roadFeatures.forEach(f => {
   lSegment.default(f).features.forEach(s => segments.push(s));
 });
+report("roads segmentated");
 
 const equalPoints = (p1, p2) => {
   const cs1 = p1.geometry.coordinates;
@@ -70,6 +80,7 @@ const joinLines = (l1, l2) => {
   cs2.filter((c, ci) => ci !== 0).forEach(c2 => coords.push(c2));
   return turf.lineString(coords);
 };
+report("lines joined");
 
 //console.log(JSON.stringify(roadFeatures));
 
@@ -89,6 +100,7 @@ segments.forEach((rf1, rf1i) => {
     }
   });
 });
+report("intersections detected");
 
 // crossroads
 const crossroads = intersections.filter(i => {
@@ -103,6 +115,7 @@ const crossroads = intersections.filter(i => {
 
   return crosses.length > 2;
 });
+report("crossroads identified");
 
 // dead ends
 const deadEnds = [];
@@ -122,6 +135,7 @@ segments.forEach((s1, si1) => {
     }
   });
 });
+report("deadends identified");
 
 // join settlements, ports, crossroads and dead ends
 const nodes = [];
@@ -138,6 +152,7 @@ ports.features.forEach(f => addNode(f, "port"));
 settlements.features.forEach(f => addNode(f, "settlement"));
 crossroads.forEach(f => addNode(f, "crossroad"));
 deadEnds.forEach(f => addNode(f, "deadend"));
+report("nodes merged");
 
 // join route and road segments based on nodes
 segments.forEach((rf1, rf1i) => {
@@ -159,6 +174,7 @@ segments.forEach((rf1, rf1i) => {
     }
   });
 });
+report("segments recalculated");
 
 // get valid segments
 const segmentsFiltered = segments
@@ -177,6 +193,7 @@ segmentsFiltered.forEach(s => {
   s.properties.to = 0;
   s.properties.length = length(s);
 });
+report("segments validated");
 
 const saveFile = (name, data) => {
   fs.writeFileSync(
@@ -188,3 +205,5 @@ const saveFile = (name, data) => {
 // saving files
 saveFile("nodes", nodes);
 saveFile("edges", segmentsFiltered);
+
+report("files saved");
