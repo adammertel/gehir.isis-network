@@ -92,7 +92,10 @@ segments.forEach((rf1, rf1i) => {
       if (intersection.features.length) {
         intersection.features.map(f => {
           // duplicates
-          if (!intersections.some(i => equal.default(i, f))) {
+          if (
+            !intersections.some(i => equalPoints(i, f)) &&
+            !settlements.features.some(s => equalPoints(s, f))
+          ) {
             intersections.push(f);
           }
         });
