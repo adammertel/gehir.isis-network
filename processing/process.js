@@ -125,27 +125,19 @@ segments.forEach((s1, si1) => {
 
 // join settlements, ports, crossroads and dead ends
 const nodes = [];
+const addNode = (f, type) => {
+  nodes.push(
+    turf.point(f.geometry.coordinates, {
+      ...f.properties,
+      ...{ type: type, id: nodes.length }
+    })
+  );
+};
 
-ports.features.forEach(f => {
-  f.properties.type = "port";
-  nodes.push(turf.point(f.geometry.coordinates, f.properties));
-});
-settlements.features.forEach(f => {
-  f.properties.type = "settlement";
-  nodes.push(turf.point(f.geometry.coordinates, f.properties));
-});
-crossroads.forEach(f => {
-  f.properties.type = "crossroad";
-  if (!nodes.some(n => equalPoints(n, f))) {
-    nodes.push(turf.point(f.geometry.coordinates, f.properties));
-  }
-});
-deadEnds.forEach(f => {
-  f.properties.type = "deadend";
-  if (!nodes.some(n => equalPoints(n, f))) {
-    nodes.push(turf.point(f.geometry.coordinates, f.properties));
-  }
-});
+ports.features.forEach(f => addNode(f, "port"));
+settlements.features.forEach(f => addNode(f, "settlement"));
+crossroads.forEach(f => addNode(f, "crossroad"));
+deadEnds.forEach(f => addNode(f, "deadend"));
 
 // join route and road segments based on nodes
 segments.forEach((rf1, rf1i) => {
@@ -168,6 +160,7 @@ segments.forEach((rf1, rf1i) => {
   });
 });
 
+// get valid segments
 const segmentsFiltered = segments
   .filter(s => s.geometry.coordinates[0].length > 1)
   .map(s => {
@@ -177,6 +170,8 @@ const segmentsFiltered = segments
       properties: s.properties
     };
   });
+
+// add node ids for segments
 segmentsFiltered.forEach(s => {
   s.properties.from = 0;
   s.properties.to = 0;
