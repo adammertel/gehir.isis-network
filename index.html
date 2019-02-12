@@ -75,7 +75,16 @@
           }).bindPopup(buildTable(f.properties));
         }
       });
-      addData("edges");
+      addData("edges", {
+        pointToLayer: f => {
+          const coords = f.geometry.coordinates;
+          const color = {};
+          return L.lineString([coords[1], coords[0]], {
+            ...nodeOptions[f.properties.type],
+            ...{ fillOpacity: 0 }
+          }).bindPopup(buildTable(f.properties));
+        }
+      });
 
       //addData("original/nodes");
     });
