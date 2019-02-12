@@ -34,16 +34,18 @@
 
       const path = "./../data/";
 
-      const addData = (file, options = {}) => {
+      const addData = (file, options = {}, next = () => {}) => {
         $.getJSON(path + file + ".geojson", data => {
-          L.geoJSON(data, options)
-            .addTo(map)
-            .bringToBack();
+          next(
+            L.geoJSON(data, options)
+              .addTo(map)
+              .bringToBack()
+          );
         });
       };
 
       const nodeOptions = {
-        port: {
+        road: {
           radius: 5,
           color: "blue",
           fill: "navyblue"
@@ -65,26 +67,43 @@
         }
       };
 
+      const edgeOptions = {
+        road: {
+          weight: 3,
+          color: "#a52a2a"
+        },
+        maritime: {
+          weight: 3,
+          color: "#000080"
+        }
+      };
+
       addData("nodes", {
         pointToLayer: f => {
           const coords = f.geometry.coordinates;
-          const color = {};
+
           return L.circleMarker([coords[1], coords[0]], {
             ...nodeOptions[f.properties.type],
             ...{ fillOpacity: 0 }
           }).bindPopup(buildTable(f.properties));
         }
       });
-      addData("edges", {
-        pointToLayer: f => {
-          const coords = f.geometry.coordinates;
-          const color = {};
-          return L.lineString([coords[1], coords[0]], {
-            ...nodeOptions[f.properties.type],
-            ...{ fillOpacity: 0 }
-          }).bindPopup(buildTable(f.properties));
+      addData(
+        "edges",
+        {
+          style: f => {
+            return {
+              ...edgeOptions[f.properties.type],
+              ...{ fillOpacity: 0 }
+            };
+          }
+        },
+        layer => {
+          layer.eachLayer(l => {
+            l.bindPopup(buildTable(l.feature.properties));
+          });
         }
-      });
+      );
 
       //addData("original/nodes");
     });
