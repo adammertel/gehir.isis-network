@@ -25,22 +25,22 @@ const routes = readJSON("original/routes");
 
 const ports = readJSON("original/ports");
 const settlements = readJSON("original/settlements");
+report("files read");
 
 const edges = [].concat(...[roads.features, routes.features]);
 
-const roadFeatures = [];
+const edgeFeatures = [];
 edges.forEach(feat => {
   feat.geometry.coordinates.forEach(coord => {
-    roadFeatures.push(turf.lineString(coord));
+    edgeFeatures.push(turf.lineString(coord, feat.properties));
   });
 });
-report("files read");
 
 const segments = [];
-roadFeatures.forEach(f => {
+edgeFeatures.forEach(f => {
   lSegment.default(f).features.forEach(s => segments.push(s));
 });
-report("roads segmentated");
+report("routes segmentated");
 
 const equalPoints = (p1, p2) => {
   const cs1 = p1.geometry.coordinates;
