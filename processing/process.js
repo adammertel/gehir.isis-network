@@ -105,7 +105,7 @@ segments.forEach((rf1, rf1i) => {
 });
 report("intersections detected");
 
-// crossroads
+/* crossroads */
 const crossroads = intersections.filter(i => {
   const crosses = segments.filter(segment => {
     return segment.geometry.coordinates.find(c => {
@@ -120,7 +120,7 @@ const crossroads = intersections.filter(i => {
 });
 report("crossroads identified");
 
-// dead ends
+/* dead ends */
 const deadEnds = [];
 segments.forEach((s1, si1) => {
   s1.geometry.coordinates.forEach(c => {
@@ -182,19 +182,36 @@ report("segments recalculated");
 // get valid segments
 const segmentsFiltered = segments
   .filter(s => s.geometry.coordinates[0].length > 1)
-  .map(s => {
+  .map((s, si) => {
     return {
       type: s.type,
       geometry: s.geometry,
-      properties: s.properties
+      properties: { ...s.properties, ...{ id: si } }
     };
   });
 
 // add node ids for segments
 segmentsFiltered.forEach(s => {
-  s.properties.from = 0;
-  s.properties.to = 0;
-  s.properties.length = length(s);
+  const coords = s.geometry.coordinates;
+  const fromC = coords[0];
+  const toC = coords[coords.length - 1];
+
+  const fromNode = nodes.find(node => equalPoints(node, turf.point(fromC)));
+  const toNode = nodes.find(node => equalPoints(node, turf.point(toC)));
+
+  //console.log(fromNode);
+  //console.log(toNode);
+
+  if (fromNode) {
+    s.properties.from = fromNode.properties.id;
+  }
+  if (toNode) {
+    s.properties.to = toNode.properties.id;
+  } else {
+    console.log("no to node", s.properties);
+  }
+
+  s.properties.length = length(s).toFixed(3);
 });
 report("segments validated");
 
