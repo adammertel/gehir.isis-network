@@ -85,7 +85,9 @@
           return L.circleMarker([coords[1], coords[0]], {
             ...nodeOptions[f.properties.type],
             ...{ fillOpacity: 0 }
-          }).bindTooltip(buildTable(f.properties));
+          }).bindTooltip(buildTable(f.properties), {
+            permanent: false
+          });
         }
       });
       addData(
