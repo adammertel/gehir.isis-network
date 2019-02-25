@@ -1,5 +1,7 @@
 var turf = require("turf");
 var fs = require("fs");
+var jsnx = require("jsnetworkx");
+
 var lintersect = require("@turf/line-intersect");
 var lSplit = require("@turf/line-split");
 var lSegment = require("@turf/line-segment");
@@ -125,7 +127,8 @@ segments.forEach((rf1, rf1i) => {
           // duplicates
           if (
             !intersections.some(i => equalPoints(i, f)) &&
-            !settlements.features.some(s => equalPoints(s, f))
+            !settlements.features.some(s => equalPoints(s, f)) &&
+            !ports.features.some(p => equalPoints(p, f))
           ) {
             intersections.push(f);
           }
@@ -154,20 +157,29 @@ report("crossroads identified");
 /* dead ends */
 const deadEnds = [];
 segments.forEach((s1, si1) => {
-  s1.geometry.coordinates.forEach(c => {
-    const crosses = segments
-      .filter((s2, si2) => si1 !== si2)
-      .filter(s2 => {
-        const c2 = s2.geometry.coordinates;
-        return (
-          (c[0] === c2[0][0] && c[1] === c2[0][1]) ||
-          (c[0] === c2[1][0] && c[1] === c2[1][1])
-        );
-      });
-    if (!crosses.length) {
-      deadEnds.push(turf.point(c));
-    }
-  });
+  s1.geometry.coordinates
+    .filter(c => {
+      return (
+        !settlements.features.some(s =>
+          equalCoordinates(s.geometry.coordinates, c)
+        ) &&
+        !ports.features.some(p => equalCoordinates(p.geometry.coordinates, c))
+      );
+    })
+    .forEach(c => {
+      const crosses = segments
+        .filter((s2, si2) => si1 !== si2)
+        .find(s2 => {
+          const c2 = s2.geometry.coordinates;
+          return (
+            (c[0] === c2[0][0] && c[1] === c2[0][1]) ||
+            (c[0] === c2[1][0] && c[1] === c2[1][1])
+          );
+        });
+      if (!crosses) {
+        deadEnds.push(turf.point(c));
+      }
+    });
 });
 report("deadends identified");
 
@@ -258,21 +270,41 @@ segmentsFiltered.forEach(s => {
   const fromNode = nodes.find(node => equalPoints(node, turf.point(fromC)));
   const toNode = nodes.find(node => equalPoints(node, turf.point(toC)));
 
-  //console.log(fromNode);
-  //console.log(toNode);
-
   if (fromNode) {
     s.properties.from = fromNode.properties.id;
+  } else {
+    console.log("no from node", s.properties);
   }
   if (toNode) {
     s.properties.to = toNode.properties.id;
   } else {
-    //console.log("no to node", s.properties);
+    console.log("no to node", s.properties);
   }
 
   s.properties.length = length(s).toFixed(3);
 });
 report("segments validated");
+
+var G = new jsnx.Graph();
+segmentsFiltered.forEach(segment => {
+  G.addEdge(segment.properties.from, segment.properties.to, {
+    length: segment.properties.length,
+    weight: ((1 / segment.properties.length) * 100).toFixed(3)
+  });
+});
+const bCentralities = jsnx.betweennessCentrality(G, { normalized: true });
+const eCentralities = jsnx.eigenvectorCentrality(G, {
+  maxIter: 99999
+});
+nodes.map(node => {
+  const bcentrality = bCentralities["_numberValues"][node.properties.id];
+  const ecentrality = eCentralities["_numberValues"][node.properties.id];
+
+  node.properties.bcentrality = bcentrality ? bcentrality.toFixed(3) : 0;
+  node.properties.ecentrality = ecentrality ? ecentrality.toFixed(3) : 0;
+});
+
+report("graph created");
 
 const saveFile = (name, data) => {
   fs.writeFileSync(
@@ -280,9 +312,8 @@ const saveFile = (name, data) => {
     JSON.stringify(turf.featureCollection(data))
   );
 };
-
-// saving files
 saveFile("nodes", nodes);
 saveFile("edges", segmentsFiltered);
+// saving files
 
 report("files saved");
