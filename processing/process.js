@@ -45,7 +45,35 @@ report("routes segmentated");
 const equalPoints = (p1, p2) => {
   const cs1 = p1.geometry.coordinates;
   const cs2 = p2.geometry.coordinates;
+  return equalCoordinates(cs1, cs2);
+};
+
+const equalCoordinates = (cs1, cs2) => {
   return cs1[0] === cs2[0] && cs1[1] === cs2[1];
+};
+
+const intersectingPoint = (e1, e2) => {
+  const ps1 = firstAndLastVertex(e1.geometry.coordinates);
+  const ps2 = firstAndLastVertex(e2.geometry.coordinates);
+
+  if (equalCoordinates(ps1[0], ps2[0]) || equalCoordinates(ps1[0], ps2[1])) {
+    return ps1[0];
+  } else if (
+    equalCoordinates(ps1[1], ps2[0]) ||
+    equalCoordinates(ps1[1], ps2[1])
+  ) {
+    return ps1[1];
+  } else {
+    return false;
+  }
+
+  return ps2.find(p2 => {
+    return ps1.find(p1 => equalCoordinates(p1, p2));
+  });
+};
+
+const firstAndLastVertex = e => {
+  return [e[0], e[e.length - 1]];
 };
 
 // takes two line features and return one joined
@@ -54,15 +82,17 @@ const joinLines = (l1, l2) => {
 
   const cs1 = l1.geometry.coordinates;
   const cs2 = l2.geometry.coordinates;
+
   let revertFirst = false;
   let revertSecond = false;
-  cs1.forEach((c1, ci1) => {
-    cs2.forEach((c2, ci2) => {
-      if (c1[0] === c2[0] && c1[1] === c2[1]) {
+
+  firstAndLastVertex(cs1).forEach((c1, ci1) => {
+    firstAndLastVertex(cs2).forEach((c2, ci2) => {
+      if (equalCoordinates(c1, c2)) {
         if (ci1 === 0) {
           revertFirst = true;
         }
-        if (ci2 === l2.geometry.coordinates.length - 1) {
+        if (ci2 === 1) {
           revertSecond = true;
         }
       }
@@ -78,6 +108,7 @@ const joinLines = (l1, l2) => {
 
   cs1.forEach(c1 => coords.push(c1));
   cs2.filter((c, ci) => ci !== 0).forEach(c2 => coords.push(c2));
+
   return turf.lineString(coords);
 };
 report("lines joined");
@@ -157,19 +188,47 @@ crossroads.forEach(f => addNode(f, "crossroad"));
 deadEnds.forEach(f => addNode(f, "deadend"));
 report("nodes merged");
 
+// finds intersections not in points
+const intersectingPlaces = intersections.filter(i => {
+  return !nodes.some(n => equalPoints(n, i));
+});
+report("looking for intersecting places");
+
+const joinedSegments = [];
+intersectingPlaces.forEach(intersection => {
+  // find intersecting segments
+  const edges = segments.filter(s =>
+    s.geometry.coordinates.find(c =>
+      equalCoordinates(c, intersection.geometry.coordinates)
+    )
+  );
+  if (edges.length === 2) {
+    edges[0].geometry = joinLines(edges[0], edges[1]).geometry;
+    edges[1].geometry.coordinates = [[]];
+  }
+});
+report("segments recalculated");
+
+/*
 // join route and road segments based on nodes
 segments.forEach((rf1, rf1i) => {
   segments.forEach((rf2, rf2i) => {
-    if (rf1i !== rf2i) {
+    if (
+      rf1i !== rf2i &&
+      rf1.geometry.coordinates.length &&
+      rf2.geometry.coordinates.length
+    ) {
       // TODO: own algorithm
-      const intersection = lintersect.default(rf1, rf2);
+      const intersection = intersectingPoint(rf1, rf2);
 
       // if there is an intersection
-      if (intersection.features.length) {
-        const intersect = intersection.features[0];
-
-        // if the intersection is not node
-        if (!nodes.some(n => equalPoints(n, intersect))) {
+      if (intersection) {
+        // if the intersection is not equal to any node
+        if (
+          !nodes.some(n =>
+            equalCoordinates(n.geometry.coordinates, intersection)
+          )
+        ) {
           rf1.geometry = joinLines(rf1, rf2).geometry;
           rf2.geometry.coordinates = [[]];
         }
@@ -177,7 +236,7 @@ segments.forEach((rf1, rf1i) => {
     }
   });
 });
-report("segments recalculated");
+*/
 
 // get valid segments
 const segmentsFiltered = segments
@@ -208,7 +267,7 @@ segmentsFiltered.forEach(s => {
   if (toNode) {
     s.properties.to = toNode.properties.id;
   } else {
-    console.log("no to node", s.properties);
+    //console.log("no to node", s.properties);
   }
 
   s.properties.length = length(s).toFixed(3);
