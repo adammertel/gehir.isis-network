@@ -19,8 +19,29 @@ const report = text => {
 };
 
 // reading file
-const readJSON = fileName =>
-  JSON.parse(fs.readFileSync(path + fileName + ".geojson", "utf8"));
+const readJSON = fileName => {
+  const dataset = JSON.parse(
+    fs.readFileSync(path + fileName + ".geojson", "utf8")
+  );
+  const floatingPoint = 4;
+  const fixedFeatures = dataset.features.map(f => {
+    const coordinates = f.geometry.coordinates.map(coords => {
+      if (!isNaN(coords)) {
+        return parseFloat(coords.toFixed(floatingPoint));
+      } else {
+        return coords.map(cs =>
+          cs.map(c => parseFloat(c.toFixed(floatingPoint)))
+        );
+      }
+    });
+    f.geometry.coordinates = coordinates;
+    return f;
+  });
+
+  dataset.features = fixedFeatures;
+
+  return dataset;
+};
 
 const roads = readJSON("original/roads");
 const routes = readJSON("original/routes");
@@ -206,7 +227,6 @@ const intersectingPlaces = intersections.filter(i => {
 });
 report("looking for intersecting places");
 
-const joinedSegments = [];
 intersectingPlaces.forEach(intersection => {
   // find intersecting segments
   const edges = segments.filter(s =>
@@ -214,41 +234,13 @@ intersectingPlaces.forEach(intersection => {
       equalCoordinates(c, intersection.geometry.coordinates)
     )
   );
+
   if (edges.length === 2) {
     edges[0].geometry = joinLines(edges[0], edges[1]).geometry;
     edges[1].geometry.coordinates = [[]];
   }
 });
 report("segments recalculated");
-
-/*
-// join route and road segments based on nodes
-segments.forEach((rf1, rf1i) => {
-  segments.forEach((rf2, rf2i) => {
-    if (
-      rf1i !== rf2i &&
-      rf1.geometry.coordinates.length &&
-      rf2.geometry.coordinates.length
-    ) {
-      // TODO: own algorithm
-      const intersection = intersectingPoint(rf1, rf2);
-
-      // if there is an intersection
-      if (intersection) {
-        // if the intersection is not equal to any node
-        if (
-          !nodes.some(n =>
-            equalCoordinates(n.geometry.coordinates, intersection)
-          )
-        ) {
-          rf1.geometry = joinLines(rf1, rf2).geometry;
-          rf2.geometry.coordinates = [[]];
-        }
-      }
-    }
-  });
-});
-*/
 
 // get valid segments
 const segmentsFiltered = segments
@@ -273,29 +265,66 @@ segmentsFiltered.forEach(s => {
   if (fromNode) {
     s.properties.from = fromNode.properties.id;
   } else {
-    console.log("no from node", s.properties);
+    console.log("no from node", JSON.stringify(s.geometry.coordinates));
   }
   if (toNode) {
     s.properties.to = toNode.properties.id;
   } else {
-    console.log("no to node", s.properties);
+    console.log("no to node", JSON.stringify(s.geometry.coordinates));
   }
 
   s.properties.length = length(s).toFixed(3);
 });
+
+const segmentsValidated = segmentsFiltered.filter(
+  s => s.properties.to && s.properties.from
+);
+
+const segmentsToBeJoined = segmentsFiltered.filter(
+  s => !s.properties.from || !s.properties.to
+);
+
+segmentsToBeJoined.forEach((s1, si1) => {
+  segmentsToBeJoined.forEach((s2, si2) => {
+    if (
+      si1 !== si2 &&
+      s1.geometry.coordinates.length &&
+      s2.geometry.coordinates.length
+    ) {
+      const intersection = intersectingPoint(s1, s1);
+      if (intersection) {
+        // if the intersection is not equal to any node
+        if (
+          !nodes.some(n =>
+            equalCoordinates(n.geometry.coordinates, intersection)
+          )
+        ) {
+          s1.geometry = joinLines(s1, s2).geometry;
+          s2.geometry.coordinates = [[]];
+        }
+      }
+    }
+  });
+});
+segmentsToBeJoined
+  .filter(s => s.geometry.coordinates[0].length)
+  .forEach(s => segmentsValidated.push(s));
+
 report("segments validated");
 
 var G = new jsnx.Graph();
-segmentsFiltered.forEach(segment => {
+segmentsValidated.forEach(segment => {
   G.addEdge(segment.properties.from, segment.properties.to, {
     length: segment.properties.length,
     weight: ((1 / segment.properties.length) * 100).toFixed(3)
   });
 });
+
 const bCentralities = jsnx.betweennessCentrality(G, { normalized: true });
 const eCentralities = jsnx.eigenvectorCentrality(G, {
   maxIter: 99999
 });
+
 nodes.map(node => {
   const bcentrality = bCentralities["_numberValues"][node.properties.id];
   const ecentrality = eCentralities["_numberValues"][node.properties.id];
@@ -304,6 +333,7 @@ nodes.map(node => {
   node.properties.ecentrality = ecentrality ? ecentrality.toFixed(3) : 0;
 });
 
+console.log(segmentsValidated.length);
 report("graph created");
 
 const saveFile = (name, data) => {
@@ -313,7 +343,7 @@ const saveFile = (name, data) => {
   );
 };
 saveFile("nodes", nodes);
-saveFile("edges", segmentsFiltered);
+saveFile("edges", segmentsValidated);
 // saving files
 
 report("files saved");
