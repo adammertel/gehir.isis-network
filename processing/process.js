@@ -343,12 +343,33 @@ segmentsValidated
 report("identifying ports");
 
 var G = new jsnx.Graph();
+
 segmentsValidated.forEach(segment => {
+  const weight = parseFloat(((1 / segment.properties.length) * 100).toFixed(3));
+
   G.addEdge(segment.properties.from, segment.properties.to, {
     length: segment.properties.length,
-    weight: ((1 / segment.properties.length) * 100).toFixed(3)
+    weight: weight
   });
 });
+
+const alexandriaId = 145;
+const paths = jsnx.shortestPath(G, { source: alexandriaId, weight: "weight" });
+
+report("graph created");
+
+const visits = {};
+nodes
+  .filter(n => n.properties.port || n.properties.settlement)
+  .forEach(node => {
+    const nodeId = node.properties.id;
+    const path = paths.get(nodeId);
+    path.forEach(node => {
+      visits[node] = node in visits ? visits[node] + 1 : 1;
+    });
+  });
+
+report("visits calculated");
 
 const bCentralities = jsnx.betweennessCentrality(G, { normalized: true });
 const eCentralities = jsnx.eigenvectorCentrality(G, {
@@ -361,10 +382,11 @@ nodes.map(node => {
 
   node.properties.bcentrality = bcentrality ? bcentrality.toFixed(3) : 0;
   node.properties.ecentrality = ecentrality ? ecentrality.toFixed(3) : 0;
+  node.properties.visits = visits[node.properties.id];
 });
 
 console.log(segmentsValidated.length);
-report("graph created");
+report("centralities calculated");
 
 const saveFile = (name, data) => {
   fs.writeFileSync(
