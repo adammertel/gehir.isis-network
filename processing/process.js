@@ -89,10 +89,18 @@ const intersectingPoint = (e1, e2) => {
   } else {
     return false;
   }
+};
 
-  return ps2.find(p2 => {
-    return ps1.find(p1 => equalCoordinates(p1, p2));
-  });
+const segmentFromNode = segment => {
+  const coords = segment.geometry.coordinates;
+  const fromC = coords[0];
+  return nodes.find(node => equalPoints(node, turf.point(fromC)));
+};
+
+const segmentToNode = segment => {
+  const coords = segment.geometry.coordinates;
+  const fromC = coords[coords.length - 1];
+  return nodes.find(node => equalPoints(node, turf.point(fromC)));
 };
 
 const firstAndLastVertex = e => {
@@ -206,13 +214,14 @@ report("deadends identified");
 
 // join settlements, ports, crossroads and dead ends
 const nodes = [];
-const addNode = (f, type) => {
+const addNode = (f, source) => {
   nodes.push(
     turf.point(f.geometry.coordinates, {
       ...f.properties,
+      source,
       ...{
-        settlement: type === "settlement",
-        port: type === "port",
+        port: source === "port",
+        settlement: source === "settlement",
         id: nodes.length
       }
     })
@@ -258,21 +267,17 @@ const segmentsFiltered = segments
   });
 
 // add node ids for segments
-segmentsFiltered.forEach(s => {
-  const coords = s.geometry.coordinates;
-  const fromC = coords[0];
-  const toC = coords[coords.length - 1];
-
-  const fromNode = nodes.find(node => equalPoints(node, turf.point(fromC)));
-  const toNode = nodes.find(node => equalPoints(node, turf.point(toC)));
+segmentsFiltered.forEach(segment => {
+  const fromNode = segmentFromNode(segment);
+  const toNode = segmentToNode(segment);
 
   if (fromNode) {
-    s.properties.from = fromNode.properties.id;
+    segment.properties.from = fromNode.properties.id;
   }
   if (toNode) {
-    s.properties.to = toNode.properties.id;
+    segment.properties.to = toNode.properties.id;
   }
-  s.properties.length = length(s).toFixed(3);
+  segment.properties.length = length(segment).toFixed(3);
 });
 
 const segmentsValidated = segmentsFiltered.filter(
@@ -311,6 +316,31 @@ segmentsToBeJoined
   .forEach(s => segmentsValidated.push(s));
 
 report("segments validated");
+
+segmentsValidated
+  .filter(s => s.properties.type === "maritime")
+  .forEach(segment => {
+    const fromNode = segmentFromNode(segment);
+    const toNode = segmentToNode(segment);
+
+    if (
+      fromNode &&
+      (fromNode.properties.source === "port" ||
+        fromNode.properties.source === "settlement")
+    ) {
+      fromNode.properties.port = true;
+    }
+
+    if (
+      toNode &&
+      (toNode.properties.source === "port" ||
+        toNode.properties.source === "settlement")
+    ) {
+      toNode.properties.port = true;
+    }
+  });
+
+report("identifying ports");
 
 var G = new jsnx.Graph();
 segmentsValidated.forEach(segment => {
