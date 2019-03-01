@@ -103,7 +103,7 @@
         layer => {
           layer.eachLayer(l => {
             l.bindTooltip(buildTable(l.feature.properties), {
-              permanent: true
+              permanent: !(l.feature.properties.to || l.feature.properties.from)
             });
           });
         }

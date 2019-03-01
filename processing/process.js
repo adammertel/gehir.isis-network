@@ -210,7 +210,11 @@ const addNode = (f, type) => {
   nodes.push(
     turf.point(f.geometry.coordinates, {
       ...f.properties,
-      ...{ type: type, id: nodes.length }
+      ...{
+        settlement: type === "settlement",
+        port: type === "port",
+        id: nodes.length
+      }
     })
   );
 };
@@ -264,25 +268,21 @@ segmentsFiltered.forEach(s => {
 
   if (fromNode) {
     s.properties.from = fromNode.properties.id;
-  } else {
-    console.log("no from node", JSON.stringify(s.geometry.coordinates));
   }
   if (toNode) {
     s.properties.to = toNode.properties.id;
-  } else {
-    console.log("no to node", JSON.stringify(s.geometry.coordinates));
   }
-
   s.properties.length = length(s).toFixed(3);
 });
 
 const segmentsValidated = segmentsFiltered.filter(
-  s => s.properties.to && s.properties.from
+  s => "to" in s.properties && "from" in s.properties
 );
 
 const segmentsToBeJoined = segmentsFiltered.filter(
-  s => !s.properties.from || !s.properties.to
+  s => !("to" in s.properties || "from" in s.properties)
 );
+console.log("segments to be joined", segmentsToBeJoined);
 
 segmentsToBeJoined.forEach((s1, si1) => {
   segmentsToBeJoined.forEach((s2, si2) => {
