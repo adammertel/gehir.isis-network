@@ -365,7 +365,7 @@ nodes
     const nodeId = node.properties.id;
     const path = paths.get(nodeId);
     path.forEach(node => {
-      visits[node] = node in visits ? visits[node] + 1 : 1;
+      visits[node] = node in visits ? visits[node] + 1 : 0;
     });
   });
 

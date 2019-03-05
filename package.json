@@ -15,6 +15,7 @@
     "@turf/line-intersect": "^6.0.2",
     "@turf/line-segment": "^6.0.2",
     "@turf/line-split": "^5.1.5",
+    "gdal": "^0.9.8",
     "geojson": "^0.5.0",
     "jsnetworkx": "^0.3.4",
     "light-server": "^2.6.0",

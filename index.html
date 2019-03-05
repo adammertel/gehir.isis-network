@@ -45,18 +45,20 @@
       };
 
       const nodeStyle = nodeProps => {
+        const radius = visits => visits / 2 + 2;
         const style = {
           color: "grey",
-          radius: 2,
+          radius: radius(nodeProps.visits),
           fillColor: "grey",
           opacity: 1,
           fillOpacity: 1
         };
+
         if (nodeProps.port) {
-          (style.color = "blue"), (style.radius = 6);
+          style.color = "blue";
         }
         if (nodeProps.settlement) {
-          (style.fillColor = "orange"), (style.radius = 6);
+          style.fillColor = "orange";
         }
         return style;
       };
