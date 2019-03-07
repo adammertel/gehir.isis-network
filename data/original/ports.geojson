@@ -14,8 +14,6 @@
 { "type": "Feature", "properties": { "title": "Nisyros, on Nisyros insula" }, "geometry": { "type": "Point", "coordinates": [ 27.1429, 36.6168 ] } },
 { "type": "Feature", "properties": { "title": "Telos" }, "geometry": { "type": "Point", "coordinates": [ 27.3324, 36.4595 ] } },
 { "type": "Feature", "properties": { "title": "Metaponti" }, "geometry": { "type": "Point", "coordinates": [ 27.8467, 36.5519 ] } },
-{ "type": "Feature", "properties": { "title": "Chalcia, Calchia" }, "geometry": { "type": "Point", "coordinates": [ 27.6042, 36.2176 ] } },
-{ "type": "Feature", "properties": { "title": "Rhodes, Akantia" }, "geometry": { "type": "Point", "coordinates": [ 28.22761, 36.44311 ] } },
 { "type": "Feature", "properties": { "title": "Lindus, Lindos, Thermydros" }, "geometry": { "type": "Point", "coordinates": [ 28.0882, 36.0913 ] } },
 { "type": "Feature", "properties": { "title": "Camire, Kamiros, Kerama, Bema?" }, "geometry": { "type": "Point", "coordinates": [ 27.9212, 36.3362 ] } },
 { "type": "Feature", "properties": { "title": "Abydos" }, "geometry": { "type": "Point", "coordinates": [ 26.411, 40.1942 ] } },
@@ -28,6 +26,7 @@
 { "type": "Feature", "properties": { "title": "Ceramus, Keramos" }, "geometry": { "type": "Point", "coordinates": [ 27.9526, 37.0376 ] } },
 { "type": "Feature", "properties": { "title": "Palaia Knidos, Ancient Knidos" }, "geometry": { "type": "Point", "coordinates": [ 27.68585, 36.73097 ] } },
 { "type": "Feature", "properties": { "title": "Phalaro" }, "geometry": { "type": "Point", "coordinates": [ 28.14439, 36.65003 ] } },
-{ "type": "Feature", "properties": { "title": "Physkos, Physcus" }, "geometry": { "type": "Point", "coordinates": [ 28.269, 36.8548 ] } }
+{ "type": "Feature", "properties": { "title": "Physkos, Physcus" }, "geometry": { "type": "Point", "coordinates": [ 28.269, 36.8548 ] } },
+{ "type": "Feature", "properties": { "title": "Alexandria" }, "geometry": { "type": "Point", "coordinates": [ 29.89443, 31.20557 ] } }
 ]
 }
