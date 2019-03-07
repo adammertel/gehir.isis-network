@@ -278,6 +278,15 @@ segmentsFiltered.forEach(segment => {
     segment.properties.to = toNode.properties.id;
   }
   segment.properties.length = length(segment).toFixed(3);
+  let weight = parseFloat((segment.properties.length * 100).toFixed(3));
+  if (segment.properties.type === "maritime") {
+    weight = weight * (1 / 140);
+  }
+  if (segment.properties.type === "road") {
+    weight = weight * (1 / 30);
+  }
+
+  segment.properties.weight = weight;
 });
 
 const segmentsValidated = segmentsFiltered.filter(
@@ -345,25 +354,29 @@ report("identifying ports");
 var G = new jsnx.Graph();
 
 segmentsValidated.forEach(segment => {
-  const weight = parseFloat(((1 / segment.properties.length) * 100).toFixed(3));
-
   G.addEdge(segment.properties.from, segment.properties.to, {
     length: segment.properties.length,
-    weight: weight
+    weight: segment.properties.weight
   });
 });
 
-const alexandriaId = 145;
-const paths = jsnx.shortestPath(G, { source: alexandriaId, weight: "weight" });
+const alexandriaId = nodes.find(node => node.properties.title === "Alexandria")
+  .properties.id;
 
+console.log("alexandria id", alexandriaId);
+//const paths = jsnx.shortestPath(G, { source: alexandriaId, weight: "weight" });
+const paths = jsnx.allPairsDijkstraPath(G, { weight: "weight" });
+
+//console.log(paths.get(40).get(alexandriaId));
 report("graph created");
 
 const visits = {};
 nodes
   .filter(n => n.properties.port || n.properties.settlement)
+  //.filter(n => n.properties.id === 43)
   .forEach(node => {
     const nodeId = node.properties.id;
-    const path = paths.get(nodeId);
+    const path = paths.get(nodeId).get(alexandriaId);
     path.forEach(node => {
       visits[node] = node in visits ? visits[node] + 1 : 0;
     });
