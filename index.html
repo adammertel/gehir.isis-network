@@ -18,7 +18,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function(event) {
-      var map = L.map("map").setView([40, 27], 10);
+      var map = L.map("map").setView([36, 28], 7);
 
       L.tileLayer(
         "https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}",
@@ -45,7 +45,7 @@
       };
 
       const nodeStyle = nodeProps => {
-        const radius = visits => visits / 2 + 2;
+        const radius = visits => Math.sqrt(visits, 1.4) + 5;
         const style = {
           color: "grey",
           radius: radius(nodeProps.visits),
@@ -58,7 +58,7 @@
           style.color = "blue";
         }
         if (nodeProps.settlement) {
-          style.fillColor = "orange";
+          style.fillColor = "red";
         }
         return style;
       };
@@ -66,7 +66,7 @@
       const edgeOptions = {
         road: {
           weight: 3,
-          color: "#a52a2a"
+          color: "green"
         },
         maritime: {
           weight: 3,
