@@ -2,6 +2,7 @@ var turf = require("turf");
 var fs = require("fs");
 var jsnx = require("jsnetworkx");
 
+var tobler = require("./tobler");
 var lintersect = require("@turf/line-intersect");
 var lSplit = require("@turf/line-split");
 var lSegment = require("@turf/line-segment");
