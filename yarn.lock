@@ -100,6 +100,15 @@
   dependencies:
     "@turf/helpers" "^5.1.5"
 
+"@turf/length@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/length/-/length-5.1.5.tgz#f3a5f864c2b996a8bb471794535a1faf12eebefb"
+  integrity sha1-86X4ZMK5lqi7RxeUU1ofrxLuvvs=
+  dependencies:
+    "@turf/distance" "^5.1.5"
+    "@turf/helpers" "^5.1.5"
+    "@turf/meta" "^5.1.5"
+
 "@turf/length@^6.0.2":
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/@turf/length/-/length-6.0.2.tgz#22d91a6d0174e862a3614865613f1aceb1162dac"
@@ -108,6 +117,16 @@
     "@turf/distance" "6.x"
     "@turf/helpers" "6.x"
     "@turf/meta" "6.x"
+
+"@turf/line-chunk@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/line-chunk/-/line-chunk-5.1.5.tgz#910a85c05c06d9d0f9c38977a05e0818d5085c42"
+  integrity sha1-kQqFwFwG2dD5w4l3oF4IGNUIXEI=
+  dependencies:
+    "@turf/helpers" "^5.1.5"
+    "@turf/length" "^5.1.5"
+    "@turf/line-slice-along" "^5.1.5"
+    "@turf/meta" "^5.1.5"
 
 "@turf/line-intersect@^5.1.5":
   version "5.1.5"
@@ -148,6 +167,16 @@
     "@turf/helpers" "^5.1.5"
     "@turf/invariant" "^5.1.5"
     "@turf/meta" "^5.1.5"
+
+"@turf/line-slice-along@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/line-slice-along/-/line-slice-along-5.1.5.tgz#eddad0a21ef479f2968a11bd2dd7289a2132e9a5"
+  integrity sha1-7drQoh70efKWihG9LdcomiEy6aU=
+  dependencies:
+    "@turf/bearing" "^5.1.5"
+    "@turf/destination" "^5.1.5"
+    "@turf/distance" "^5.1.5"
+    "@turf/helpers" "^5.1.5"
 
 "@turf/line-split@^5.1.5":
   version "5.1.5"
