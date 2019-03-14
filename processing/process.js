@@ -283,42 +283,54 @@ segmentsFiltered.forEach(segment => {
   }
 
   // calculate distance
-  let coeffSum = 0;
-  const segmentLength = length(segment).toFixed(3);
+  let coeffSumThere = 0;
+  let coeffSumBack = 0;
+  const segmentLength = length(segment);
 
   const speedMaritime = 140;
   const speedRoad = 30;
 
-  let speed = segment.properties.type === "road" ? speedRoad : speedMaritime;
+  const speedCategory =
+    segment.properties.type === "road" ? speedRoad : speedMaritime;
 
+  let speedThere = speedCategory;
+  let speedBack = speedCategory;
+
+  // calculating speed for road based on the tobler coefficient
   if (segment.properties.type === "road") {
     const chunks = lChunk(segment, chunkLength).features;
 
     chunks.forEach(chunk => {
       const ps = firstAndLastVertex(chunk.geometry.coordinates);
-      const coeff = tobler(...ps);
       const dist = turf.distance(...ps);
-      coeffSum = coeffSum + dist * coeff;
+
+      const coeffThere = tobler(...ps);
+      const coeffBack = tobler(...ps.reverse());
+      coeffSumThere = coeffSumThere + dist * coeffThere;
+      coeffSumBack = coeffSumBack + dist * coeffBack;
     });
 
-    const speedCoeff = coeffSum / segmentLength;
-    speed = speed * speedCoeff;
+    const speedCoeffThere = coeffSumThere / segmentLength;
+    const speedCoeffBack = coeffSumBack / segmentLength;
+    speedThere = speedCategory * speedCoeffThere;
+    speedBack = speedCategory * speedCoeffBack;
   }
 
-  console.log(speed);
+  const timeThere = segmentLength / speedThere;
+  const timeBack = segmentLength / speedBack;
 
   segment.properties.length = segmentLength;
   let weight = parseFloat((segment.properties.length * 100).toFixed(3));
   if (segment.properties.type === "maritime") {
     weight = weight * (1 / 140);
-    segment.properties.coeff = coeffSum;
   }
   if (segment.properties.type === "road") {
     weight = weight * (1 / 30);
   }
 
+  segment.properties.timeThere = timeThere;
+  segment.properties.timeBack = timeBack;
   segment.properties.weight = weight;
-  segment.properties.speed = speed;
 });
 
 const segmentsValidated = segmentsFiltered.filter(
@@ -382,10 +394,16 @@ segmentsValidated
 
 report("identifying ports");
 
-var G = new jsnx.Graph();
+var G = new jsnx.DiGraph();
 
 segmentsValidated.forEach(segment => {
   G.addEdge(segment.properties.from, segment.properties.to, {
+    time: segment.properties.timeFrom,
+    length: segment.properties.length,
+    weight: segment.properties.weight
+  });
+  G.addEdge(segment.properties.to, segment.properties.from, {
+    time: segment.properties.timeBack,
     length: segment.properties.length,
     weight: segment.properties.weight
   });
