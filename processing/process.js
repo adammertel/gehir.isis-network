@@ -1,10 +1,11 @@
 var turf = require("turf");
 var fs = require("fs");
 var jsnx = require("jsnetworkx");
+var tobler = require("./tobler").tobler;
 
-var tobler = require("./tobler");
 var lintersect = require("@turf/line-intersect");
 var lSplit = require("@turf/line-split");
+var lChunk = require("@turf/line-chunk");
 var lSegment = require("@turf/line-segment");
 var equal = require("@turf/boolean-equal");
 var clean = require("@turf/clean-coords").default;
@@ -268,6 +269,8 @@ const segmentsFiltered = segments
   });
 
 // add node ids for segments
+// length of each chunk in the segment - for calculating the tobler index
+const chunkLength = 0.05;
 segmentsFiltered.forEach(segment => {
   const fromNode = segmentFromNode(segment);
   const toNode = segmentToNode(segment);
@@ -278,16 +281,44 @@ segmentsFiltered.forEach(segment => {
   if (toNode) {
     segment.properties.to = toNode.properties.id;
   }
-  segment.properties.length = length(segment).toFixed(3);
+
+  // calculate distance
+  let coeffSum = 0;
+  const segmentLength = length(segment).toFixed(3);
+
+  const speedMaritime = 140;
+  const speedRoad = 30;
+
+  let speed = segment.properties.type === "road" ? speedRoad : speedMaritime;
+
+  if (segment.properties.type === "road") {
+    const chunks = lChunk(segment, chunkLength).features;
+
+    chunks.forEach(chunk => {
+      const ps = firstAndLastVertex(chunk.geometry.coordinates);
+      const coeff = tobler(...ps);
+      const dist = turf.distance(...ps);
+      coeffSum = coeffSum + dist * coeff;
+    });
+
+    const speedCoeff = coeffSum / segmentLength;
+    speed = speed * speedCoeff;
+  }
+
+  console.log(speed);
+
+  segment.properties.length = segmentLength;
   let weight = parseFloat((segment.properties.length * 100).toFixed(3));
   if (segment.properties.type === "maritime") {
     weight = weight * (1 / 140);
+    segment.properties.coeff = coeffSum;
   }
   if (segment.properties.type === "road") {
     weight = weight * (1 / 30);
   }
 
   segment.properties.weight = weight;
+  segment.properties.speed = speed;
 });
 
 const segmentsValidated = segmentsFiltered.filter(
@@ -297,7 +328,6 @@ const segmentsValidated = segmentsFiltered.filter(
 const segmentsToBeJoined = segmentsFiltered.filter(
   s => !("to" in s.properties || "from" in s.properties)
 );
-console.log("segments to be joined", segmentsToBeJoined);
 
 segmentsToBeJoined.forEach((s1, si1) => {
   segmentsToBeJoined.forEach((s2, si2) => {
@@ -399,7 +429,6 @@ nodes.map(node => {
   node.properties.visits = visits[node.properties.id];
 });
 
-console.log(segmentsValidated.length);
 report("centralities calculated");
 
 const saveFile = (name, data) => {
