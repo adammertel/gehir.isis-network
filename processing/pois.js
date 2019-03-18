@@ -5,11 +5,12 @@ const parse = require("csv-parse/lib/sync");
 const folderPath = "./../data/pois/";
 
 var round = require("./base").round;
+var saveFile = require("./base").saveFile;
 
 const artefactsCsv = parse(fs.readFileSync(folderPath + "artefacts.csv"), {
   from: 2
 });
-const artefacts = artefactsCsv.map(artefact => {
+artefactPoints = artefactsCsv.map(artefact => {
   return turf.point([round(artefact[0]), round(artefact[1])], {
     id: artefact[2],
     name: artefact[3],
@@ -22,7 +23,7 @@ const artefacts = artefactsCsv.map(artefact => {
 const templesCsv = parse(fs.readFileSync(folderPath + "temples.csv"), {
   from: 2
 });
-const temples = templesCsv.map(temple => {
+templePoints = templesCsv.map(temple => {
   return turf.point([round(temple[0]), round(temple[1])], {
     id: temple[2],
     name: temple[3],
@@ -38,7 +39,7 @@ const temples = templesCsv.map(temple => {
 const politicsCsv = parse(fs.readFileSync(folderPath + "politics.csv"), {
   from: 2
 });
-const politics = politicsCsv.map(politic => {
+politicPoints = politicsCsv.map(politic => {
   return turf.point([round(politic[0]), round(politic[1])], {
     name: politic[2],
     control: politic[4],
@@ -48,4 +49,6 @@ const politics = politicsCsv.map(politic => {
   });
 });
 
-console.log(politics);
+saveFile("artefacts", artefactPoints);
+saveFile("temples", templePoints);
+saveFile("politics", politicPoints);
