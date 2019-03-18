@@ -33,9 +33,9 @@ const readJSON = fileName => {
   const fixedFeatures = dataset.features.map(f => {
     const coordinates = f.geometry.coordinates.map(coords => {
       if (!isNaN(coords)) {
-        return round(coords);
+        return round(coords, 4);
       } else {
-        return coords.map(cs => cs.map(c => round(c)));
+        return coords.map(cs => cs.map(c => round(c, 4)));
       }
     });
     f.geometry.coordinates = coordinates;
@@ -325,7 +325,6 @@ segmentsFiltered.forEach(segment => {
 
   segment.properties.timeThere = round(timeThere);
   segment.properties.timeBack = round(timeBack);
-  segment.properties.weight = weight;
 });
 
 const segmentsValidated = segmentsFiltered.filter(
