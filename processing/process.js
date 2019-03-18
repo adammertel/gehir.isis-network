@@ -25,6 +25,11 @@ const ports = readJSON("original/ports");
 const settlements = readJSON("original/settlements");
 report("files read");
 
+const artefacts = readJSON("pois/artefacts");
+const temples = readJSON("pois/temples");
+const politics = readJSON("pois/politics");
+report("processing pois");
+
 const edges = [].concat(...[roads.features, routes.features]);
 
 const edgeFeatures = [];
@@ -371,6 +376,18 @@ const eCentralities = jsnx.eigenvectorCentrality(G, {
   maxIter: 99999
 });
 
+const closestNode = (from, nodes) => {
+  const distances = nodes.map(node => {
+    const distance = turf.distance(from, node);
+    return {
+      id: node.properties.id,
+      distance: distance
+    };
+  });
+  distances.sort((n1, n2) => (n1.distance < n2.distance ? -1 : 1));
+  return distances[0];
+};
+
 nodes.map(node => {
   const bcentrality = bCentralities["_numberValues"][node.properties.id];
   const ecentrality = eCentralities["_numberValues"][node.properties.id];
@@ -383,20 +400,13 @@ nodes.map(node => {
 
   const nodeVisits = visits[node.properties.id] || [];
   if (node.properties.port) {
-    const nodeDistances = nodes
-      .filter(n => n.properties.id !== node.properties.id)
-      .filter(n => n.properties.source === "crossroad")
-      .filter(n => n.properties.maritime)
-      .map(nodeToSearch => {
-        const distanceToNode = turf.distance(nodeToSearch, node);
-        return {
-          id: nodeToSearch.properties.id,
-          distance: distanceToNode
-        };
-      });
-    nodeDistances.sort((n1, n2) => (n1.distance < n2.distance ? -1 : 1));
-
-    const closestDistance = nodeDistances[0];
+    const closestDistance = closestNode(
+      node,
+      nodes
+        .filter(n => n.properties.id !== node.properties.id)
+        .filter(n => n.properties.source === "crossroad")
+        .filter(n => n.properties.maritime)
+    );
 
     if (closestDistance.distance < closeNodeDistance) {
       // there is a close connected crossroad
@@ -412,6 +422,53 @@ nodes.map(node => {
   }
 });
 report("centralities calculated");
+
+/*
+  poi distances
+*/
+closestPoi = (node, pois) => {
+  let closestDistance = 999999;
+  let closestPoi = false;
+
+  pois.forEach(poi => {
+    const poiNode = closestNode(poi, nodes);
+    const path = paths.get(node.properties.id).get(poiNode.id);
+    let distance = 0;
+
+    for (var i = 0; i !== path.length - 1; i++) {
+      const fromNode = path[i];
+      const toNode = path[i + 1];
+      const edgeThere = segmentsValidated.find(
+        e => e.properties.from == fromNode && e.properties.to == toNode
+      );
+      const edgeBack = segmentsValidated.find(
+        e => e.properties.to == fromNode && e.properties.from == toNode
+      );
+
+      const edgeDistance = edgeThere
+        ? edgeThere.properties.timeThere
+        : edgeBack.properties.timeBack;
+
+      distance = distance + edgeDistance;
+    }
+
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestPoi = poi;
+    }
+  });
+  return {
+    distance: round(closestDistance),
+    poi: closestPoi
+  };
+};
+
+nodes
+  .filter(n => n.properties.settlement)
+  .forEach(node => {
+    node.properties.temple = closestPoi(node, temples.features).distance;
+  });
+report("poi distances calculated");
 
 /*
   saving files
