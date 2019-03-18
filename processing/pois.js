@@ -2,7 +2,7 @@ var turf = require("turf");
 var fs = require("fs");
 
 const parse = require("csv-parse/lib/sync");
-const folderPath = "./../data/pois/";
+const folderPath = "./../data/original/pois/";
 
 var round = require("./base").round;
 var saveFile = require("./base").saveFile;
@@ -49,6 +49,6 @@ politicPoints = politicsCsv.map(politic => {
   });
 });
 
-saveFile("artefacts", artefactPoints);
-saveFile("temples", templePoints);
-saveFile("politics", politicPoints);
+saveFile("pois/artefacts", artefactPoints);
+saveFile("pois/temples", templePoints);
+saveFile("pois/politics", politicPoints);

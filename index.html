@@ -89,6 +89,7 @@
           });
         }
       });
+
       addData(
         "edges",
         {
@@ -108,6 +109,15 @@
         }
       );
 
+      addData("./pois/temples", {
+        pointToLayer: f => {
+          const coords = f.geometry.coordinates;
+
+          return L.circleMarker([coords[1], coords[0]], {
+            color: "black"
+          });
+        }
+      });
       //addData("original/nodes");
     });
 

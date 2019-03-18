@@ -466,7 +466,22 @@ closestPoi = (node, pois) => {
 nodes
   .filter(n => n.properties.settlement)
   .forEach(node => {
-    node.properties.temple = closestPoi(node, temples.features).distance;
+    node.properties.templeAll = closestPoi(node, temples.features).distance;
+    node.properties.temple3BCE = closestPoi(
+      node,
+      temples.features.filter(f => f.properties.BCE3)
+    ).distance;
+
+    node.properties.artefactAll = closestPoi(node, artefacts.features).distance;
+    node.properties.artefact3BCE = closestPoi(
+      node,
+      artefacts.features.filter(f => f.properties.BCE3)
+    ).distance;
+
+    node.properties.politicsMilitary = closestPoi(
+      node,
+      politics.features.filter(f => f.properties.military)
+    ).distance;
   });
 report("poi distances calculated");
 
