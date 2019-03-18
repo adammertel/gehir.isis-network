@@ -1,0 +1,6 @@
+shp
+node_modules
+*.tif
+*.tiff
+*.qsd
+*.qsd~

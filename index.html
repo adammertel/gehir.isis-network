@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map preview</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  </head>
+  <body>
+    <div
+      id="map"
+      style="position: absolute; top: 0; bottom: 0; left: 0; right: 0"
+    ></div>
+  </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var map = L.map("map").setView([36, 28], 7);
+
+      L.tileLayer(
+        "https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}",
+        {
+          attribution:
+            'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          subdomains: "abcd",
+          minZoom: 0,
+          maxZoom: 20,
+          ext: "png"
+        }
+      ).addTo(map);
+
+      const path = "./../data/";
+
+      const addData = (file, options = {}, next = () => {}) => {
+        $.getJSON(path + file + ".geojson", data => {
+          next(
+            L.geoJSON(data, options)
+              .addTo(map)
+              .bringToBack()
+          );
+        });
+      };
+
+      const nodeStyle = nodeProps => {
+        const radius = visits => Math.pow(visits, 0.6) + 3;
+        const style = {
+          color: "grey",
+          radius: radius(nodeProps.visits),
+          fillColor: "grey",
+          opacity: 1,
+          fillOpacity: 1
+        };
+
+        if (nodeProps.port) {
+          style.color = "blue";
+        }
+        if (nodeProps.settlement) {
+          style.fillColor = "red";
+        }
+
+        if (!nodeProps.settlement && !nodeProps.port) {
+          style.radius = 2;
+        }
+        return style;
+      };
+
+      const edgeOptions = {
+        road: {
+          weight: 3,
+          color: "green"
+        },
+        maritime: {
+          weight: 3,
+          color: "#000080"
+        }
+      };
+
+      addData("nodes", {
+        pointToLayer: f => {
+          const coords = f.geometry.coordinates;
+
+          return L.circleMarker([coords[1], coords[0]], {
+            ...nodeStyle(f.properties)
+          }).bindTooltip(buildTable(f.properties), {
+            permanent: false
+          });
+        }
+      });
+
+      addData(
+        "edges",
+        {
+          style: f => {
+            return {
+              ...edgeOptions[f.properties.type],
+              ...{ fillOpacity: 0 }
+            };
+          }
+        },
+        layer => {
+          layer.eachLayer(l => {
+            l.bindTooltip(buildTable(l.feature.properties), {
+              permanent: !(l.feature.properties.to || l.feature.properties.from)
+            });
+          });
+        }
+      );
+
+      addData("./pois/temples", {
+        pointToLayer: f => {
+          const coords = f.geometry.coordinates;
+
+          return L.circleMarker([coords[1], coords[0]], {
+            color: "black"
+          });
+        }
+      });
+      //addData("original/nodes");
+    });
+
+    const buildTable = props => {
+      let html = "<table><tbody>";
+      Object.keys(props).forEach(key => {
+        html += `<tr>`;
+        html += `<th>${key}</th>`;
+        if (props[key] instanceof Array) {
+          html += `<td>${props[key].join()}</td>`;
+        } else {
+          html += `<td>${props[key]}</td>`;
+        }
+        html += `</tr>`;
+      });
+
+      html += "</tbody></table>";
+      return html;
+    };
+  </script>
+</html>
