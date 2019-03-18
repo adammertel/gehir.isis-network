@@ -16,8 +16,13 @@ var path = "./../data/";
 let lastTime = new Date().valueOf();
 const report = text => {
   const now = new Date().valueOf();
-  console.log(text, "in", (now - lastTime) / 1000, "s");
+  console.log("task '" + text + "' finished in", (now - lastTime) / 1000, "s");
   lastTime = new Date().valueOf();
+};
+
+const defaultRoundingPoint = 4;
+const round = (numberToRound, floatingPoint = defaultRoundingPoint) => {
+  return parseFloat(numberToRound.toFixed(floatingPoint));
 };
 
 // reading file
@@ -25,15 +30,12 @@ const readJSON = fileName => {
   const dataset = JSON.parse(
     fs.readFileSync(path + fileName + ".geojson", "utf8")
   );
-  const floatingPoint = 4;
   const fixedFeatures = dataset.features.map(f => {
     const coordinates = f.geometry.coordinates.map(coords => {
       if (!isNaN(coords)) {
-        return parseFloat(coords.toFixed(floatingPoint));
+        return round(coords);
       } else {
-        return coords.map(cs =>
-          cs.map(c => parseFloat(c.toFixed(floatingPoint)))
-        );
+        return coords.map(cs => cs.map(c => round(c)));
       }
     });
     f.geometry.coordinates = coordinates;
@@ -320,16 +322,9 @@ segmentsFiltered.forEach(segment => {
   const timeBack = segmentLength / speedBack;
 
   segment.properties.length = segmentLength;
-  let weight = parseFloat((segment.properties.length * 100).toFixed(3));
-  if (segment.properties.type === "maritime") {
-    weight = weight * (1 / 140);
-  }
-  if (segment.properties.type === "road") {
-    weight = weight * (1 / 30);
-  }
 
-  segment.properties.timeThere = timeThere;
-  segment.properties.timeBack = timeBack;
+  segment.properties.timeThere = round(timeThere);
+  segment.properties.timeBack = round(timeBack);
   segment.properties.weight = weight;
 });
 
@@ -398,14 +393,10 @@ var G = new jsnx.DiGraph();
 
 segmentsValidated.forEach(segment => {
   G.addEdge(segment.properties.from, segment.properties.to, {
-    time: segment.properties.timeFrom,
-    length: segment.properties.length,
-    weight: segment.properties.weight
+    time: segment.properties.timeThere
   });
   G.addEdge(segment.properties.to, segment.properties.from, {
-    time: segment.properties.timeBack,
-    length: segment.properties.length,
-    weight: segment.properties.weight
+    time: segment.properties.timeBack
   });
 });
 
@@ -414,7 +405,8 @@ const alexandriaId = nodes.find(node => node.properties.title === "Alexandria")
 
 console.log("alexandria id", alexandriaId);
 //const paths = jsnx.shortestPath(G, { source: alexandriaId, weight: "weight" });
-const paths = jsnx.allPairsDijkstraPath(G, { weight: "weight" });
+// console.log(G.edges());
+const paths = jsnx.allPairsDijkstraPath(G, { weight: "time" });
 
 //console.log(paths.get(40).get(alexandriaId));
 report("graph created");
@@ -442,8 +434,8 @@ nodes.map(node => {
   const bcentrality = bCentralities["_numberValues"][node.properties.id];
   const ecentrality = eCentralities["_numberValues"][node.properties.id];
 
-  node.properties.bcentrality = bcentrality ? bcentrality.toFixed(3) : 0;
-  node.properties.ecentrality = ecentrality ? ecentrality.toFixed(3) : 0;
+  node.properties.bcentrality = bcentrality ? round(bcentrality) : 0;
+  node.properties.ecentrality = ecentrality ? round(ecentrality) : 0;
   node.properties.visits = visits[node.properties.id];
 });
 
