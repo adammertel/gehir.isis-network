@@ -176,12 +176,14 @@ report("intersections detected");
 const crossroads = intersections.filter(i => {
   const crosses = segments.filter(segment => {
     return segment.geometry.coordinates.find(c => {
-      return (
-        c[0] === i.geometry.coordinates[0] && c[1] === i.geometry.coordinates[1]
-      );
+      return equalCoordinates(c, i.geometry.coordinates);
       // equal.default(c, i.geometry.coordinates)
     });
   });
+
+  if (crosses.find(c => c.properties.type === "maritime")) {
+    i.properties.maritime = true;
+  }
 
   return crosses.length > 2;
 });
@@ -204,10 +206,7 @@ segments.forEach((s1, si1) => {
         .filter((s2, si2) => si1 !== si2)
         .find(s2 => {
           const c2 = s2.geometry.coordinates;
-          return (
-            (c[0] === c2[0][0] && c[1] === c2[0][1]) ||
-            (c[0] === c2[1][0] && c[1] === c2[1][1])
-          );
+          return equalCoordinates(c, c2[0]) || equalCoordinates(c, c2[1]);
         });
       if (!crosses) {
         deadEnds.push(turf.point(c));
@@ -439,7 +438,27 @@ nodes.map(node => {
 
   node.properties.bcentrality = bcentrality ? round(bcentrality) : 0;
   node.properties.ecentrality = ecentrality ? round(ecentrality) : 0;
-  node.properties.visits = visits[node.properties.id] || [];
+
+  // in case of port - check if there is a close maritime node
+  const closeNodeDistance = 10;
+  if (node.properties.port) {
+    const nodeDistances = nodes
+      .filter(n => n.properties.id !== node.properties.id)
+      .filter(n => n.properties.source === "crossroad")
+      .filter(n => n.properties.maritime)
+      .map(nodeToSearch => {
+        const distanceToNode = turf.distance(nodeToSearch, node);
+        return {
+          id: nodeToSearch.properties.node,
+          distance: distanceToNode
+        };
+      });
+    nodeDistances;
+
+    node.properties.visits = visits[node.properties.id] || [];
+  } else {
+    node.properties.visits = visits[node.properties.id] || [];
+  }
 });
 
 report("centralities calculated");
