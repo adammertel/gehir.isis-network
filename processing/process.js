@@ -418,7 +418,11 @@ nodes
     const nodeId = node.properties.id;
     const path = paths.get(nodeId).get(alexandriaId);
     path.forEach(node => {
-      visits[node] = node in visits ? visits[node] + 1 : 0;
+      if (node in visits) {
+        visits[node].push(nodeId);
+      } else {
+        visits[node] = [nodeId];
+      }
     });
   });
 
@@ -435,7 +439,7 @@ nodes.map(node => {
 
   node.properties.bcentrality = bcentrality ? round(bcentrality) : 0;
   node.properties.ecentrality = ecentrality ? round(ecentrality) : 0;
-  node.properties.visits = visits[node.properties.id];
+  node.properties.visits = visits[node.properties.id] || [];
 });
 
 report("centralities calculated");

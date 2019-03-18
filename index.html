@@ -45,7 +45,7 @@
       };
 
       const nodeStyle = nodeProps => {
-        const radius = visits => Math.sqrt(visits, 1.4) + 5;
+        const radius = visits => Math.sqrt(visits.length, 1.2) + 3;
         const style = {
           color: "grey",
           radius: radius(nodeProps.visits),
@@ -112,7 +112,12 @@
       Object.keys(props).forEach(key => {
         html += `<tr>`;
         html += `<th>${key}</th>`;
-        html += `<td>${props[key]}</td>`;
+        if (props[key] instanceof Array) {
+          console.log(props[key]);
+          html += `<td>${props[key].join()}</td>`;
+        } else {
+          html += `<td>${props[key]}</td>`;
+        }
         html += `</tr>`;
       });
 
