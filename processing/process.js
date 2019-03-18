@@ -413,12 +413,12 @@ nodes.map(node => {
       const allVisits = nodeVisits.concat(visits[closestDistance.id]);
       node.properties.visits = allVisits.filter(
         (el, i, a) => i === a.indexOf(el)
-      );
+      ).length;
     } else {
-      node.properties.visits = nodeVisits;
+      node.properties.visits = nodeVisits.length;
     }
   } else {
-    node.properties.visits = nodeVisits;
+    node.properties.visits = nodeVisits.length;
   }
 });
 report("centralities calculated");
@@ -426,31 +426,35 @@ report("centralities calculated");
 /*
   poi distances
 */
-closestPoi = (node, pois) => {
+const distanceOnNetwork = (fromId, toId) => {
+  const path = paths.get(fromId).get(toId);
+  let distance = 0;
+
+  for (var i = 0; i !== path.length - 1; i++) {
+    const fromNode = path[i];
+    const toNode = path[i + 1];
+    const edgeThere = segmentsValidated.find(
+      e => e.properties.from == fromNode && e.properties.to == toNode
+    );
+    const edgeBack = segmentsValidated.find(
+      e => e.properties.to == fromNode && e.properties.from == toNode
+    );
+
+    const edgeDistance = edgeThere
+      ? edgeThere.properties.timeThere
+      : edgeBack.properties.timeBack;
+
+    distance = distance + edgeDistance;
+  }
+  return distance;
+};
+const closestPoi = (node, pois) => {
   let closestDistance = 999999;
   let closestPoi = false;
 
   pois.forEach(poi => {
     const poiNode = closestNode(poi, nodes);
-    const path = paths.get(node.properties.id).get(poiNode.id);
-    let distance = 0;
-
-    for (var i = 0; i !== path.length - 1; i++) {
-      const fromNode = path[i];
-      const toNode = path[i + 1];
-      const edgeThere = segmentsValidated.find(
-        e => e.properties.from == fromNode && e.properties.to == toNode
-      );
-      const edgeBack = segmentsValidated.find(
-        e => e.properties.to == fromNode && e.properties.from == toNode
-      );
-
-      const edgeDistance = edgeThere
-        ? edgeThere.properties.timeThere
-        : edgeBack.properties.timeBack;
-
-      distance = distance + edgeDistance;
-    }
+    distance = distanceOnNetwork(node.properties.id, poiNode.id);
 
     if (distance < closestDistance) {
       closestDistance = distance;
@@ -482,6 +486,10 @@ nodes
       node,
       politics.features.filter(f => f.properties.military)
     ).distance;
+
+    node.properties.alexandria = round(
+      distanceOnNetwork(alexandriaId, node.properties.id)
+    );
   });
 report("poi distances calculated");
 
