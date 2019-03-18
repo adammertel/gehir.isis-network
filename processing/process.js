@@ -401,7 +401,6 @@ segmentsValidated.forEach(segment => {
 const alexandriaId = nodes.find(node => node.properties.title === "Alexandria")
   .properties.id;
 
-console.log("alexandria id", alexandriaId);
 //const paths = jsnx.shortestPath(G, { source: alexandriaId, weight: "weight" });
 // console.log(G.edges());
 const paths = jsnx.allPairsDijkstraPath(G, { weight: "time" });
@@ -441,6 +440,8 @@ nodes.map(node => {
 
   // in case of port - check if there is a close maritime node
   const closeNodeDistance = 10;
+
+  const nodeVisits = visits[node.properties.id] || [];
   if (node.properties.port) {
     const nodeDistances = nodes
       .filter(n => n.properties.id !== node.properties.id)
@@ -449,15 +450,25 @@ nodes.map(node => {
       .map(nodeToSearch => {
         const distanceToNode = turf.distance(nodeToSearch, node);
         return {
-          id: nodeToSearch.properties.node,
+          id: nodeToSearch.properties.id,
           distance: distanceToNode
         };
       });
-    nodeDistances;
+    nodeDistances.sort((n1, n2) => (n1.distance < n2.distance ? -1 : 1));
 
-    node.properties.visits = visits[node.properties.id] || [];
+    const closestDistance = nodeDistances[0];
+
+    if (closestDistance.distance < closeNodeDistance) {
+      // there is a close connected crossroad
+      const allVisits = nodeVisits.concat(visits[closestDistance.id]);
+      node.properties.visits = allVisits.filter(
+        (el, i, a) => i === a.indexOf(el)
+      );
+    } else {
+      node.properties.visits = nodeVisits;
+    }
   } else {
-    node.properties.visits = visits[node.properties.id] || [];
+    node.properties.visits = nodeVisits;
   }
 });
 

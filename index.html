@@ -45,10 +45,10 @@
       };
 
       const nodeStyle = nodeProps => {
-        const radius = visits => Math.sqrt(visits.length, 1.2) + 3;
+        const radius = visits => Math.pow(visits, 0.6) + 3;
         const style = {
           color: "grey",
-          radius: radius(nodeProps.visits),
+          radius: radius(nodeProps.visits.length),
           fillColor: "grey",
           opacity: 1,
           fillOpacity: 1
@@ -59,6 +59,10 @@
         }
         if (nodeProps.settlement) {
           style.fillColor = "red";
+        }
+
+        if (!nodeProps.settlement && !nodeProps.port) {
+          style.radius = 2;
         }
         return style;
       };
@@ -113,7 +117,6 @@
         html += `<tr>`;
         html += `<th>${key}</th>`;
         if (props[key] instanceof Array) {
-          console.log(props[key]);
           html += `<td>${props[key].join()}</td>`;
         } else {
           html += `<td>${props[key]}</td>`;
