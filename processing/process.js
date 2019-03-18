@@ -1,7 +1,15 @@
 var turf = require("turf");
-var fs = require("fs");
 var jsnx = require("jsnetworkx");
 var tobler = require("./tobler").tobler;
+
+var report = require("./base").report;
+var round = require("./base").round;
+var readJSON = require("./base").readJSON;
+var saveFile = require("./base").saveFile;
+var equalPoints = require("./base").equalPoints;
+var equalCoordinates = require("./base").equalCoordinates;
+var intersectingPoint = require("./base").intersectingPoint;
+var firstAndLastVertex = require("./base").firstAndLastVertex;
 
 var lintersect = require("@turf/line-intersect");
 var lSplit = require("@turf/line-split");
@@ -11,45 +19,8 @@ var equal = require("@turf/boolean-equal");
 var clean = require("@turf/clean-coords").default;
 var length = require("@turf/length").default;
 
-var path = "./../data/";
-
-let lastTime = new Date().valueOf();
-const report = text => {
-  const now = new Date().valueOf();
-  console.log("task '" + text + "' finished in", (now - lastTime) / 1000, "s");
-  lastTime = new Date().valueOf();
-};
-
-const defaultRoundingPoint = 4;
-const round = (numberToRound, floatingPoint = defaultRoundingPoint) => {
-  return parseFloat(numberToRound.toFixed(floatingPoint));
-};
-
-// reading file
-const readJSON = fileName => {
-  const dataset = JSON.parse(
-    fs.readFileSync(path + fileName + ".geojson", "utf8")
-  );
-  const fixedFeatures = dataset.features.map(f => {
-    const coordinates = f.geometry.coordinates.map(coords => {
-      if (!isNaN(coords)) {
-        return round(coords, 4);
-      } else {
-        return coords.map(cs => cs.map(c => round(c, 4)));
-      }
-    });
-    f.geometry.coordinates = coordinates;
-    return f;
-  });
-
-  dataset.features = fixedFeatures;
-
-  return dataset;
-};
-
 const roads = readJSON("original/roads");
 const routes = readJSON("original/routes");
-
 const ports = readJSON("original/ports");
 const settlements = readJSON("original/settlements");
 report("files read");
@@ -69,32 +40,6 @@ edgeFeatures.forEach(f => {
 });
 report("routes segmentated");
 
-const equalPoints = (p1, p2) => {
-  const cs1 = p1.geometry.coordinates;
-  const cs2 = p2.geometry.coordinates;
-  return equalCoordinates(cs1, cs2);
-};
-
-const equalCoordinates = (cs1, cs2) => {
-  return cs1[0] === cs2[0] && cs1[1] === cs2[1];
-};
-
-const intersectingPoint = (e1, e2) => {
-  const ps1 = firstAndLastVertex(e1.geometry.coordinates);
-  const ps2 = firstAndLastVertex(e2.geometry.coordinates);
-
-  if (equalCoordinates(ps1[0], ps2[0]) || equalCoordinates(ps1[0], ps2[1])) {
-    return ps1[0];
-  } else if (
-    equalCoordinates(ps1[1], ps2[0]) ||
-    equalCoordinates(ps1[1], ps2[1])
-  ) {
-    return ps1[1];
-  } else {
-    return false;
-  }
-};
-
 const segmentFromNode = segment => {
   const coords = segment.geometry.coordinates;
   const fromC = coords[0];
@@ -105,10 +50,6 @@ const segmentToNode = segment => {
   const coords = segment.geometry.coordinates;
   const fromC = coords[coords.length - 1];
   return nodes.find(node => equalPoints(node, turf.point(fromC)));
-};
-
-const firstAndLastVertex = e => {
-  return [e[0], e[e.length - 1]];
 };
 
 // takes two line features and return one joined
@@ -423,7 +364,6 @@ nodes
       }
     });
   });
-
 report("visits calculated");
 
 const bCentralities = jsnx.betweennessCentrality(G, { normalized: true });
@@ -471,17 +411,11 @@ nodes.map(node => {
     node.properties.visits = nodeVisits;
   }
 });
-
 report("centralities calculated");
 
-const saveFile = (name, data) => {
-  fs.writeFileSync(
-    path + name + ".geojson",
-    JSON.stringify(turf.featureCollection(data))
-  );
-};
+/*
+  saving files
+*/
 saveFile("nodes", nodes);
 saveFile("edges", segmentsValidated);
-// saving files
-
 report("files saved");
