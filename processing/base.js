@@ -14,7 +14,7 @@ module.exports.round = round = (
   numberToRound,
   floatingPoint = defaultRoundingPoint
 ) => {
-  return parseFloat(numberToRound.toFixed(floatingPoint));
+  return parseFloat(parseFloat(numberToRound).toFixed(floatingPoint));
 };
 
 const path = "./../data/";
