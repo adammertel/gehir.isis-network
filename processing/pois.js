@@ -42,6 +42,7 @@ const politicsCsv = parse(fs.readFileSync(folderPath + "politics.csv"), {
 politicPoints = politicsCsv.map(politic => {
   return turf.point([round(politic[0]), round(politic[1])], {
     name: politic[2],
+    certain: politic[3] !== "?",
     control: politic[4],
     type: politic[5],
     date: politic[6],
