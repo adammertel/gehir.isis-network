@@ -344,8 +344,12 @@ segmentsValidated.forEach(segment => {
   });
 });
 
-const alexandriaId = nodes.find(node => node.properties.title === "Alexandria")
-  .properties.id;
+const nodeByName = name => {
+  return nodes.find(node => node.properties.title === name);
+};
+
+const alexandriaId = nodeByName("Alexandria").properties.id;
+const rhodosId = nodeByName("Rhodes, Akantia").properties.id;
 
 //const paths = jsnx.shortestPath(G, { source: alexandriaId, weight: "weight" });
 // console.log(G.edges());
@@ -487,8 +491,16 @@ nodes
       politics.features.filter(f => f.properties.military)
     ).distance;
 
+    node.properties.politicsAllCertain = closestPoi(
+      node,
+      politics.features.filter(f => f.properties.certain)
+    ).distance;
+
     node.properties.alexandria = round(
       distanceOnNetwork(alexandriaId, node.properties.id)
+    );
+    node.properties.rhodes = round(
+      distanceOnNetwork(rhodosId, node.properties.id)
     );
   });
 report("poi distances calculated");
