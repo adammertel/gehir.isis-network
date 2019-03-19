@@ -128,13 +128,10 @@ const crossroads = intersections.filter(i => {
     });
   });
 
-<<<<<<< HEAD
   if (crosses.find(c => c.properties.type === "maritime")) {
     i.properties.maritime = true;
   }
 
-=======
->>>>>>> 47e78cb48b7863455e10e90ee08eba5cd2e19f1a
   return crosses.length > 2;
 });
 report("crossroads identified");
@@ -156,14 +153,7 @@ segments.forEach((s1, si1) => {
         .filter((s2, si2) => si1 !== si2)
         .find(s2 => {
           const c2 = s2.geometry.coordinates;
-<<<<<<< HEAD
           return equalCoordinates(c, c2[0]) || equalCoordinates(c, c2[1]);
-=======
-          return (
-            (c[0] === c2[0][0] && c[1] === c2[0][1]) ||
-            (c[0] === c2[1][0] && c[1] === c2[1][1])
-          );
->>>>>>> 47e78cb48b7863455e10e90ee08eba5cd2e19f1a
         });
       if (!crosses) {
         deadEnds.push(turf.point(c));
@@ -174,7 +164,6 @@ report("deadends identified");
 
 // join settlements, ports, crossroads and dead ends
 const nodes = [];
-<<<<<<< HEAD
 const addNode = (f, source) => {
   nodes.push(
     turf.point(f.geometry.coordinates, {
@@ -185,13 +174,6 @@ const addNode = (f, source) => {
         settlement: source === "settlement",
         id: nodes.length
       }
-=======
-const addNode = (f, type) => {
-  nodes.push(
-    turf.point(f.geometry.coordinates, {
-      ...f.properties,
-      ...{ type: type, id: nodes.length }
->>>>>>> 47e78cb48b7863455e10e90ee08eba5cd2e19f1a
     })
   );
 };
