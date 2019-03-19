@@ -1,6 +1,7 @@
 var gdal = require("gdal");
 var turf = require("turf");
 var fs = require("fs");
+var Json2csvParser = require("json2csv").Parser;
 
 let lastTime = new Date().valueOf();
 module.exports.report = text => {
@@ -39,11 +40,20 @@ module.exports.readJSON = fileName => {
   return dataset;
 };
 
-module.exports.saveFile = (name, data) => {
+module.exports.saveJSON = (name, data) => {
   fs.writeFileSync(
     path + name + ".geojson",
     JSON.stringify(turf.featureCollection(data))
   );
+};
+
+module.exports.saveCSV = (name, data) => {
+  const csvRows = data.map(d => d.properties);
+  const csvFields = Object.keys(csvRows[0]);
+  const json2csvParser = new Json2csvParser({ csvFields });
+  const csv = json2csvParser.parse(csvRows);
+
+  fs.writeFileSync(path + name + ".csv", csv);
 };
 
 module.exports.equalPoints = equalPoints = (p1, p2) => {
