@@ -5,7 +5,8 @@ var tobler = require("./tobler").tobler;
 var report = require("./base").report;
 var round = require("./base").round;
 var readJSON = require("./base").readJSON;
-var saveFile = require("./base").saveFile;
+var saveJSON = require("./base").saveJSON;
+var saveCSV = require("./base").saveCSV;
 var equalPoints = require("./base").equalPoints;
 var equalCoordinates = require("./base").equalCoordinates;
 var intersectingPoint = require("./base").intersectingPoint;
@@ -508,6 +509,10 @@ report("poi distances calculated");
 /*
   saving files
 */
-saveFile("nodes", nodes);
-saveFile("edges", segmentsValidated);
+saveJSON("nodes", nodes);
+saveJSON("edges", segmentsValidated);
+
+saveCSV("nodes", nodes);
+saveCSV("settlements", nodes.filter(n => n.properties.settlement));
+
 report("files saved");

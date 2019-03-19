@@ -1,0 +1,57 @@
+"title","source","port","settlement","id","bcentrality","ecentrality","visits","templeAll","temple3BCE","artefactAll","artefact3BCE","politicsMilitary","politicsAllCertain","alexandria","rhodes"
+"Pityoussa/Lampsacus","settlement",false,true,25,0.0016,0,2,2.9405,3.9594,1.3511,2.6358,3.9594,2.1423,9.7731,5.4233
+"Cyzicus","settlement",false,true,26,0.0034,0,1,7.293,8.7213,3.895,6.9883,8.7213,6.8594,14.5436,10.1938
+"Parium/Col. Gemella Iulia *Hadriana","settlement",false,true,27,0.0039,0,1,4.7298,5.7487,0,4.4251,5.7487,3.9316,11.5387,7.1889
+"Zeleia","settlement",false,true,28,0.0093,0,1,6.447,7.8753,4.4983,6.1423,7.8753,6.0134,13.7018,9.352
+"Adramyttium","settlement",true,true,29,0.1346,0,3,0.955,2.3833,0,0.6503,2.3833,0.5214,8.2156,3.8658
+"Antigoneia/(Col. Augusta) Alexandria Troas","settlement",true,true,30,0.0106,0,5,1.1681,2.187,0.1511,0.8634,2.187,0.3699,8.0193,3.6695
+"Assos/Apollonia","settlement",false,true,31,0.0045,0,1,2.5745,3.5934,1.7303,2.2698,3.5934,1.7763,9.4032,5.0534
+"Chios","settlement",true,true,32,0,0,26,0,0.9822,0,0.8869,0.9822,0,6.8145,2.4647
+"Cyme","settlement",true,true,33,0.0566,0,6,0,1.7663,0,0,1.7663,0.8818,7.5986,3.2488
+"Elaea","settlement",false,true,34,0.0103,0,2,1.3046,3.0709,1.0647,1.0647,3.0709,2.1864,8.8912,4.5414
+"Erythrai","settlement",true,true,35,0,0,1,0.2228,1.1022,0,1.0069,1.1022,0.2228,6.9345,2.5847
+"Magnesia ad Sipylum","settlement",false,true,36,0.0467,0,3,2.4874,4.2537,0,2.4874,4.2537,3.3692,10.0772,5.7274
+"Mytilene","settlement",true,true,37,0,0,4,0.4259,1.8542,0,0,1.8542,0.5771,7.6865,3.3367
+"Pergamum","settlement",false,true,38,0.0364,0,1,2.3782,4.1445,0,0,4.1445,3.029,9.9559,5.6061
+"Philadelpheia","settlement",false,true,39,0.0362,0,2,6.1808,6.8396,5.4208,5.4208,6.8396,6.3495,13.0227,8.6729
+"Sardis/Hyde?","settlement",false,true,40,0.036,0,3,4.1357,4.7945,3.3757,3.3757,4.7945,4.3044,11.0129,6.6631
+"Smyrna/Eurydikeia","settlement",true,true,41,0.0719,0.0001,4,0.76,1.745,0,0,1.745,0.9287,7.6404,3.2906
+"Stratonicaea/Hadrianopolis","settlement",false,true,42,0.0148,0,1,5.6488,7.4151,3.1614,3.3691,7.4151,6.3981,13.2036,8.8538
+"Teos","settlement",true,true,43,0.0696,0.0001,1,0.4923,0.4923,0.4923,0.4923,0.4923,0.0761,6.6727,2.3229
+"Thyateira","settlement",false,true,44,0.1033,0,2,4.5028,6.2691,2.0154,3.1424,6.2691,5.3846,12.0735,7.7237
+"Alabanda/Antiocheia Chrysaoron","settlement",false,true,45,0.1023,0.0069,1,1.863,1.863,1.6827,3.8908,3.8908,1.863,10.2039,5.8541
+"Bargylia","settlement",true,true,46,0.022,0.0003,3,0,0,0,0,0.6035,0,5.7698,1.42
+"Cnidus","settlement",true,true,47,0.0145,0.0173,51,0.3771,0.3771,0,0.3771,0.3771,0,5.0876,0.7378
+"Colophon/Colophon ad Mare/Notion","settlement",false,true,48,0.0373,0.0002,1,1.0577,1.0577,1.0577,1.0577,1.0577,0,7.4017,3.0519
+"Ephesus/Arsinoe(ia)","settlement",true,true,49,0.1527,0.0006,9,0,0,0,0,0,0,6.3368,1.987
+"Halicarnassus/Halikarnassos","settlement",true,true,50,0.0207,0.0013,1,0,0,0,0,0,0,5.4291,1.0793
+"Iasos","settlement",true,true,51,0.0131,0.0002,3,0.0752,0.0752,0.0752,0.0752,0.6187,0,5.785,1.4352
+"Magnesia ad Maeandrum/Leukophrys","settlement",false,true,52,0.1333,0.0009,6,0,1.0182,0,1.0182,1.0182,0,7.3523,3.0025
+"Miletus","settlement",true,true,53,0.0172,0.0002,2,0.1141,0.1141,0.1141,0.1141,0.3649,0,5.972,1.6222
+"Mylasa","settlement",false,true,54,0.0093,0.0001,1,1.0218,1.0218,1.0218,1.0218,1.6253,0,6.7923,2.4425
+"Nysa/Athymbra","settlement",false,true,55,0.0893,0.0006,3,2.505,3.5232,1.3151,3.5232,3.5232,2.505,9.8345,5.4847
+"Priene/‘Lince’?","settlement",true,true,56,0.0365,0.0002,2,0,0,0,0,0.3814,0.1141,5.9885,1.6387
+"Samos","settlement",true,true,57,0,0.0002,10,0,0.3814,0,0.3417,0,0,5.9813,1.6315
+"Stratonikeia","settlement",false,true,58,0.0998,0.0238,1,0,0,0,4.1539,4.1249,0,8.5334,4.1836
+"Tralles/Dia/Seleuceia ad Maeandrum/Kaisareia","settlement",false,true,59,0.1663,0.0022,5,1.1899,2.2081,0,2.2081,2.2081,1.1899,8.5138,4.164
+"Blaundos","settlement",false,true,60,0.0137,0,1,9.0927,9.7515,8.3327,8.3327,9.7515,9.2614,15.931,11.5812
+"Antiochia ad Maeandrum","settlement",false,true,61,0.0893,0.0002,2,4.3836,5.4018,3.1937,5.4018,5.4018,4.3836,11.7387,7.3889
+"Aphrodisias","settlement",false,true,62,0.0044,0.0001,1,5.6466,6.6648,4.4567,6.6648,6.6648,5.6466,12.9678,8.618
+"Arykanda","settlement",false,true,63,0.0111,0.0118,1,2.7907,2.8623,1.3637,1.3637,2.8473,1.3637,6.0602,2.792
+"Balboura","settlement",false,true,64,0.0309,0.0008,3,4.6141,4.7287,4.4983,4.5681,4.4983,3.9996,8.4368,4.5376
+"Caunus","settlement",true,true,65,0.0141,0.1037,1,0.4,0.5146,0,0.4,0,0,4.7498,0.4
+"Gagai/Palaion Teichos","settlement",true,true,66,0,0.0079,3,1.4935,1.5651,0.1653,0.1653,1.5501,0.1653,4.7617,1.4935
+"Herakleia Salbakes","settlement",false,true,67,0.0015,0,1,7.0174,8.0356,5.8275,8.0356,8.0356,7.0174,13.3129,9.4137
+"Kyaneai","settlement",false,true,68,0.0074,0.0196,2,2.2726,2.3442,0,1.2746,2.3292,1.0601,5.5361,2.2679
+"Limyra","settlement",true,true,69,0.0257,0.035,5,1.427,1.4986,0,0,1.4836,0,4.6952,1.427
+"Myra","settlement",true,true,70,0.0804,0.059,8,1.2645,1.3361,0,0.2665,1.3211,0.052,4.5327,1.2645
+"Oenoanda/Termessos Mikra","settlement",false,true,71,0.0289,0.0026,4,3.3809,3.4955,3.2651,3.3349,3.2651,2.7664,7.1979,3.2987
+"Olympus/Hadrianopolis","settlement",true,true,72,0.0078,0.0061,2,1.7882,1.8598,0,0.46,1.8448,0.46,5.0564,1.7882
+"Patara/Arsinoe","settlement",true,true,73,0.0245,0.1134,16,0.7688,0.8404,0.5565,0.719,0.8254,0,4.037,0.7688
+"Phaselis","settlement",true,true,74,0.0073,0.003,1,1.8702,1.9418,0,0.542,1.9268,0.542,5.1384,1.8702
+"Phellos","settlement",false,true,75,0.004,0.0152,1,3.054,3.1256,0,2.056,2.6888,1.8415,6.2411,2.9729
+"Telmessos","settlement",true,true,76,0.0219,0.0879,6,0.6145,0.7291,0.4987,0.6145,0.4987,0,4.5137,0.6145
+"Tlos","settlement",false,true,77,0.0055,0.0114,1,2.2105,2.3251,1.195,1.195,1.195,1.195,6.0676,2.1684
+"Tripolis ad Maeandrum/Apollonia ad Maeandrum/Antoniopolis","settlement",false,true,78,0.0272,0,1,8.3881,9.2719,7.1982,7.8531,9.2719,8.3881,15.2342,11.1038
+"Xanthos","settlement",false,true,79,0.0111,0.014,1,1.7525,1.8241,0,0,0,0,5.0271,1.7589
+"Rhodes, Akantia","settlement",true,true,80,0,0.1399,63,0,0.1796,0,0,0.4,0.4,4.4148,0
