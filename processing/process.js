@@ -401,7 +401,7 @@ nodes.map(node => {
   node.properties.ecentrality = ecentrality ? round(ecentrality) : 0;
 
   // in case of port - check if there is a close maritime node
-  const closeNodeDistance = 10;
+  const closeNodeDistance = 15;
 
   const nodeVisits = visits[node.properties.id] || [];
   if (node.properties.port) {

@@ -23,17 +23,19 @@ module.exports.readJSON = fileName => {
   const dataset = JSON.parse(
     fs.readFileSync(path + fileName + ".geojson", "utf8")
   );
-  const fixedFeatures = dataset.features.map(f => {
-    const coordinates = f.geometry.coordinates.map(coords => {
-      if (!isNaN(coords)) {
-        return round(coords, 4);
-      } else {
-        return coords.map(cs => cs.map(c => round(c, 4)));
-      }
+  const fixedFeatures = dataset.features
+    .filter(f => f.geometry)
+    .map(f => {
+      const coordinates = f.geometry.coordinates.map(coords => {
+        if (!isNaN(coords)) {
+          return round(coords, 4);
+        } else {
+          return coords.map(cs => cs.map(c => round(c, 4)));
+        }
+      });
+      f.geometry.coordinates = coordinates;
+      return f;
     });
-    f.geometry.coordinates = coordinates;
-    return f;
-  });
 
   dataset.features = fixedFeatures;
 
