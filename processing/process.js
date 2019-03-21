@@ -361,7 +361,7 @@ report("graph created");
 
 const visits = {};
 nodes
-  .filter(n => n.properties.port || n.properties.settlement)
+  .filter(n => n.properties.settlement)
   //.filter(n => n.properties.id === 43)
   .forEach(node => {
     const nodeId = node.properties.id;

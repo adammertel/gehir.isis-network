@@ -1,37 +1,37 @@
 "title","source","port","settlement","id","bcentrality","ecentrality","visits","templeAll","temple3BCE","artefactAll","artefact3BCE","politicsMilitary","politicsAllCertain","alexandria","rhodes","maritime"
-"Messon","port",true,false,0,0,0,1,,,,,,,,,
+"Messon","port",true,false,0,0,0,0,,,,,,,,,
 "Methymna, Methymne","port",true,false,1,0,0,1,,,,,,,,,
-"Panormos, Korsiai insula, Corsia?","port",true,false,2,0,0.0005,28,,,,,,,,,
-"Drakanon, Draconium","port",true,false,3,0,0.0003,27,,,,,,,,,
+"Panormos, Korsiai insula, Corsia?","port",true,false,2,0,0.0005,20,,,,,,,,,
+"Drakanon, Draconium","port",true,false,3,0,0.0003,20,,,,,,,,,
 "Akrite, Acrite, Acritas insula","port",true,false,4,0,0.0001,1,,,,,,,,,
-"Panormos, port of Phora & Patmos","port",true,false,5,0,0.0002,2,,,,,,,,,
+"Panormos, port of Phora & Patmos","port",true,false,5,0,0.0002,1,,,,,,,,,
 "Lakkion","port",true,false,6,0,0.0006,1,,,,,,,,,
-"Kos, Cos, commercial port","port",true,false,7,0,0.0041,48,,,,,,,,,
+"Kos, Cos, commercial port","port",true,false,7,0,0.0041,36,,,,,,,,,
 "Nisyros, on Nisyros insula","port",true,false,8,0,0.0034,1,,,,,,,,,
 "Telos","port",true,false,9,0,0.0074,1,,,,,,,,,
 "Metaponti","port",true,false,10,0,0.0059,1,,,,,,,,,
-"Lindus, Lindos, Thermydros","port",true,false,11,0,0.0833,64,,,,,,,,,
-"Camire, Kamiros, Kerama, Bema?","port",true,false,12,0,0.0505,58,,,,,,,,,
-"Abydos","port",true,false,13,0.0143,0,3,,,,,,,,,
-"Tenedos, Tenedhos insula","port",true,false,14,0,0,4,,,,,,,,,
-"Larisa, Ptolemais","port",true,false,15,0.0177,0,7,,,,,,,,,
-"Klazomenai, Clazomenae, Clazomenes, Polichne","port",true,false,16,0.0692,0.0001,5,,,,,,,,,
-"Trogilion, Trogyllium Prom.","port",true,false,17,0,0.0006,11,,,,,,,,,
+"Lindus, Lindos, Thermydros","port",true,false,11,0,0.0833,40,,,,,,,,,
+"Camire, Kamiros, Kerama, Bema?","port",true,false,12,0,0.0505,37,,,,,,,,,
+"Abydos","port",true,false,13,0.0143,0,2,,,,,,,,,
+"Tenedos, Tenedhos insula","port",true,false,14,0,0,2,,,,,,,,,
+"Larisa, Ptolemais","port",true,false,15,0.0177,0,4,,,,,,,,,
+"Klazomenai, Clazomenae, Clazomenes, Polichne","port",true,false,16,0.0692,0.0001,4,,,,,,,,,
+"Trogilion, Trogyllium Prom.","port",true,false,17,0,0.0006,10,,,,,,,,,
 "Posideion, Posidio Prom.","port",true,false,18,0,0.0004,1,,,,,,,,,
-"Myndus, Myndos, Neaoplis","port",true,false,19,0.0054,0.0039,45,,,,,,,,,
-"Ceramus, Keramos","port",true,false,20,0.0094,0.0044,1,,,,,,,,,
-"Palaia Knidos, Ancient Knidos","port",true,false,21,0.0346,0.0474,1,,,,,,,,,
-"Phalaro","port",true,false,22,0,0.1398,1,,,,,,,,,
-"Physkos, Physcus","port",true,false,23,0.1035,0.083,2,,,,,,,,,
-"Alexandria","port",true,false,24,0,0.1866,81,,,,,,,,,
+"Myndus, Myndos, Neaoplis","port",true,false,19,0.0054,0.0039,35,,,,,,,,,
+"Ceramus, Keramos","port",true,false,20,0.0094,0.0044,0,,,,,,,,,
+"Palaia Knidos, Ancient Knidos","port",true,false,21,0.0346,0.0474,0,,,,,,,,,
+"Phalaro","port",true,false,22,0,0.1398,0,,,,,,,,,
+"Physkos, Physcus","port",true,false,23,0.1035,0.083,1,,,,,,,,,
+"Alexandria","port",true,false,24,0,0.1866,56,,,,,,,,,
 "Pityoussa/Lampsacus","settlement",false,true,25,0.0017,0,2,2.9405,3.9594,1.3511,2.6358,3.9594,2.1423,9.8041,5.4543,
 "Cyzicus","settlement",false,true,26,0.0036,0,1,7.293,8.7213,3.895,6.9883,8.7213,6.8594,14.5746,10.2248,
 "Parium/Col. Gemella Iulia *Hadriana","settlement",false,true,27,0.004,0,1,4.7298,5.7487,0,4.4251,5.7487,3.9316,11.5697,7.2199,
 "Zeleia","settlement",false,true,28,0.0094,0,1,6.447,7.8753,4.4983,6.1423,7.8753,6.0134,13.7328,9.383,
 "Adramyttium","settlement",true,true,29,0.1369,0,3,0.955,2.3833,0,0.6503,2.3833,0.5214,8.2466,3.8968,
-"Antigoneia/(Col. Augusta) Alexandria Troas","settlement",true,true,30,0.0106,0,5,1.1681,2.187,0.1511,0.8634,2.187,0.3699,8.0503,3.7005,
+"Antigoneia/(Col. Augusta) Alexandria Troas","settlement",true,true,30,0.0106,0,3,1.1681,2.187,0.1511,0.8634,2.187,0.3699,8.0503,3.7005,
 "Assos/Apollonia","settlement",false,true,31,0.0045,0,1,2.5745,3.5934,1.7303,2.2698,3.5934,1.7763,9.4342,5.0844,
-"Chios","settlement",true,true,32,0,0,26,0,0.9822,0,0.8869,0.9822,0,6.8455,2.4957,
+"Chios","settlement",true,true,32,0,0,20,0,0.9822,0,0.8869,0.9822,0,6.8455,2.4957,
 "Cyme","settlement",true,true,33,0.0582,0,6,0,1.7663,0,0,1.7663,0.8818,7.6296,3.2798,
 "Elaea","settlement",false,true,34,0.0106,0,2,1.3046,3.0709,1.0647,1.0647,3.0709,2.1864,8.9222,4.5724,
 "Erythrai","settlement",true,true,35,0,0,1,0.2228,1.1022,0,1.0069,1.1022,0.2228,6.9655,2.6157,
@@ -46,17 +46,17 @@
 "Thyateira","settlement",false,true,44,0.1067,0,2,4.5028,6.2691,2.0154,3.1424,6.2691,5.3846,12.1045,7.7547,
 "Alabanda/Antiocheia Chrysaoron","settlement",false,true,45,0.1018,0.0069,1,1.863,1.863,1.6827,3.8908,3.8908,1.863,10.2349,5.8851,
 "Bargylia","settlement",true,true,46,0.0213,0.0009,3,0,0,0,0,0.598,0,5.8008,1.451,
-"Cnidus","settlement",true,true,47,0.0178,0.0182,50,0.3196,0.3196,0,0.3196,0.3196,0,5.0876,0.7378,
+"Cnidus","settlement",true,true,47,0.0178,0.0182,37,0.3196,0.3196,0,0.3196,0.3196,0,5.0876,0.7378,
 "Colophon/Colophon ad Mare/Notion","settlement",false,true,48,0.0347,0.0003,1,1.0577,1.0577,1.0577,1.0577,1.0577,0,7.4327,3.0829,
 "Ephesus/Arsinoe(ia)","settlement",true,true,49,0.1491,0.001,9,0,0,0,0,0,0,6.3678,2.018,
-"Halicarnassus/Halikarnassos","settlement",true,true,50,0.0286,0.0056,48,0,0,0,0,0,0,5.3716,1.0218,
+"Halicarnassus/Halikarnassos","settlement",true,true,50,0.0286,0.0056,36,0,0,0,0,0,0,5.3716,1.0218,
 "Iasos","settlement",true,true,51,0.0092,0.0004,3,0.0752,0.0752,0.0752,0.0752,0.6132,0,5.816,1.4662,
 "Magnesia ad Maeandrum/Leukophrys","settlement",false,true,52,0.1276,0.001,6,0,1.0182,0,1.0182,1.0182,0,7.3833,3.0335,
 "Miletus","settlement",true,true,53,0.0136,0.0003,2,0.1141,0.1141,0.1141,0.1141,0.3649,0,6.003,1.6532,
 "Mylasa","settlement",false,true,54,0.0094,0.0002,1,1.0218,1.0218,1.0218,1.0218,1.6198,0,6.8233,2.4735,
 "Nysa/Athymbra","settlement",false,true,55,0.0874,0.0007,3,2.505,3.5232,1.3151,3.5232,3.5232,2.505,9.8655,5.5157,
 "Priene/‘Lince’?","settlement",true,true,56,0.0237,0.0004,2,0,0,0,0,0.3814,0.1141,6.0195,1.6697,
-"Samos","settlement",true,true,57,0,0.0006,11,0,0.3814,0,0.3417,0,0,6.0123,1.6625,
+"Samos","settlement",true,true,57,0,0.0006,10,0,0.3814,0,0.3417,0,0,6.0123,1.6625,
 "Stratonikeia","settlement",false,true,58,0.0995,0.0238,1,0,0,0,4.1539,4.1249,0,8.5334,4.1836,
 "Tralles/Dia/Seleuceia ad Maeandrum/Kaisareia","settlement",false,true,59,0.1622,0.0023,5,1.1899,2.2081,0,2.2081,2.2081,1.1899,8.5448,4.195,
 "Blaundos","settlement",false,true,60,0.0141,0,1,9.0927,9.7515,8.3327,8.3327,9.7515,9.2614,15.962,11.6122,
@@ -79,7 +79,7 @@
 "Tlos","settlement",false,true,77,0.0057,0.0114,1,2.2105,2.3251,1.195,1.195,1.195,1.195,6.0676,2.1684,
 "Tripolis ad Maeandrum/Apollonia ad Maeandrum/Antoniopolis","settlement",false,true,78,0.0271,0,1,8.3881,9.2719,7.1982,7.8531,9.2719,8.3881,15.2342,11.1348,
 "Xanthos","settlement",false,true,79,0.0113,0.014,1,1.7525,1.8241,0,0,0,0,5.0271,1.7589,
-"Rhodes, Akantia","settlement",true,true,80,0,0.1398,63,0,0.1796,0,0,0.4,0.4,4.4148,0,
+"Rhodes, Akantia","settlement",true,true,80,0,0.1398,40,0,0.1796,0,0,0.4,0.4,4.4148,0,
 ,"crossroad",false,false,81,0.0568,0,0,,,,,,,,,
 ,"crossroad",false,false,82,0.0151,0,0,,,,,,,,,
 ,"crossroad",false,false,83,0.0935,0,1,,,,,,,,,
@@ -139,45 +139,45 @@
 ,"crossroad",false,false,137,0.0692,0,0,,,,,,,,,
 ,"crossroad",false,false,138,0.0507,0.0006,2,,,,,,,,,
 ,"crossroad",false,false,139,0.0026,0.001,0,,,,,,,,,
-,"crossroad",false,false,140,0.0126,0.3146,64,,,,,,,,,true
-,"crossroad",false,false,141,0.1644,0.0002,26,,,,,,,,,true
-,"crossroad",false,false,142,0.1549,0.0001,24,,,,,,,,,true
-,"crossroad",false,false,143,0.1477,0.001,27,,,,,,,,,true
-,"crossroad",false,false,144,0.1705,0.0005,26,,,,,,,,,true
-,"crossroad",false,false,145,0.139,0.0142,4,,,,,,,,,true
-,"crossroad",false,false,146,0.1053,0.0064,3,,,,,,,,,true
-,"crossroad",false,false,147,0.1156,0.0155,48,,,,,,,,,true
-,"crossroad",false,false,148,0.0783,0.0021,11,,,,,,,,,true
-,"crossroad",false,false,149,0.1396,0.0018,1,,,,,,,,,true
-,"crossroad",false,false,150,0.0774,0.0028,27,,,,,,,,,true
-,"crossroad",false,false,151,0.0856,0.0089,45,,,,,,,,,true
-,"crossroad",false,false,152,0.0271,0.0076,1,,,,,,,,,true
+,"crossroad",false,false,140,0.0126,0.3146,40,,,,,,,,,true
+,"crossroad",false,false,141,0.1644,0.0002,20,,,,,,,,,true
+,"crossroad",false,false,142,0.1549,0.0001,18,,,,,,,,,true
+,"crossroad",false,false,143,0.1477,0.001,20,,,,,,,,,true
+,"crossroad",false,false,144,0.1705,0.0005,20,,,,,,,,,true
+,"crossroad",false,false,145,0.139,0.0142,0,,,,,,,,,true
+,"crossroad",false,false,146,0.1053,0.0064,0,,,,,,,,,true
+,"crossroad",false,false,147,0.1156,0.0155,36,,,,,,,,,true
+,"crossroad",false,false,148,0.0783,0.0021,10,,,,,,,,,true
+,"crossroad",false,false,149,0.1396,0.0018,0,,,,,,,,,true
+,"crossroad",false,false,150,0.0774,0.0028,20,,,,,,,,,true
+,"crossroad",false,false,151,0.0856,0.0089,35,,,,,,,,,true
+,"crossroad",false,false,152,0.0271,0.0076,0,,,,,,,,,true
 ,"crossroad",false,false,153,0.0142,0.0058,0,,,,,,,,,true
-,"crossroad",false,false,154,0.0749,0,15,,,,,,,,,true
-,"crossroad",false,false,155,0.0438,0.0001,5,,,,,,,,,true
+,"crossroad",false,false,154,0.0749,0,14,,,,,,,,,true
+,"crossroad",false,false,155,0.0438,0.0001,4,,,,,,,,,true
 ,"crossroad",false,false,156,0.1237,0.0013,9,,,,,,,,,true
-,"crossroad",false,false,157,0.1256,0.0243,4,,,,,,,,,true
-,"crossroad",false,false,158,0.2002,0.528,63,,,,,,,,,true
-,"crossroad",false,false,159,0.0665,0.0213,50,,,,,,,,,true
-,"crossroad",false,false,160,0.0099,0.013,1,,,,,,,,,true
+,"crossroad",false,false,157,0.1256,0.0243,0,,,,,,,,,true
+,"crossroad",false,false,158,0.2002,0.528,40,,,,,,,,,true
+,"crossroad",false,false,159,0.0665,0.0213,37,,,,,,,,,true
+,"crossroad",false,false,160,0.0099,0.013,0,,,,,,,,,true
 ,"crossroad",false,false,161,0.1235,0,10,,,,,,,,,true
-,"crossroad",false,false,162,0.0279,0,5,,,,,,,,,true
-,"crossroad",false,false,163,0.0184,0,4,,,,,,,,,true
-,"crossroad",false,false,164,0.1288,0,9,,,,,,,,,true
-,"crossroad",false,false,165,0.0094,0.0022,1,,,,,,,,,true
-,"crossroad",false,false,166,0.0863,0.0054,40,,,,,,,,,true
-,"crossroad",false,false,167,0.054,0.0027,13,,,,,,,,,true
+,"crossroad",false,false,162,0.0279,0,3,,,,,,,,,true
+,"crossroad",false,false,163,0.0184,0,2,,,,,,,,,true
+,"crossroad",false,false,164,0.1288,0,4,,,,,,,,,true
+,"crossroad",false,false,165,0.0094,0.0022,0,,,,,,,,,true
+,"crossroad",false,false,166,0.0863,0.0054,32,,,,,,,,,true
+,"crossroad",false,false,167,0.054,0.0027,12,,,,,,,,,true
 ,"crossroad",false,false,168,0.1556,0.39,16,,,,,,,,,true
-,"crossroad",false,false,169,0.0302,0.0031,4,,,,,,,,,true
+,"crossroad",false,false,169,0.0302,0.0031,3,,,,,,,,,true
 ,"crossroad",false,false,170,0.0237,0.0012,3,,,,,,,,,true
 ,"crossroad",false,false,171,0.0285,0.0009,2,,,,,,,,,true
-,"crossroad",false,false,172,0.1578,0.1909,58,,,,,,,,,true
-,"crossroad",false,false,173,0.0549,0.0779,53,,,,,,,,,true
-,"crossroad",false,false,174,0.0413,0.0337,51,,,,,,,,,true
-,"crossroad",false,false,175,0.014,0,1,,,,,,,,,true
-,"crossroad",false,false,176,0.0901,0,9,,,,,,,,,true
-,"crossroad",false,false,177,0.1233,0.0644,4,,,,,,,,,true
-,"crossroad",false,false,178,0.0095,0.0279,1,,,,,,,,,true
+,"crossroad",false,false,172,0.1578,0.1909,37,,,,,,,,,true
+,"crossroad",false,false,173,0.0549,0.0779,37,,,,,,,,,true
+,"crossroad",false,false,174,0.0413,0.0337,37,,,,,,,,,true
+,"crossroad",false,false,175,0.014,0,0,,,,,,,,,true
+,"crossroad",false,false,176,0.0901,0,4,,,,,,,,,true
+,"crossroad",false,false,177,0.1233,0.0644,0,,,,,,,,,true
+,"crossroad",false,false,178,0.0095,0.0279,0,,,,,,,,,true
 ,"crossroad",false,false,179,0.1117,0.1318,8,,,,,,,,,true
 ,"crossroad",false,false,180,0.0429,0.0486,5,,,,,,,,,true
 ,"crossroad",false,false,181,0.029,0.0168,3,,,,,,,,,true
@@ -186,18 +186,18 @@
 ,"crossroad",false,false,184,0.0124,0.1988,6,,,,,,,,,true
 ,"crossroad",false,false,185,0.0077,0.2729,0,,,,,,,,,true
 ,"crossroad",false,false,186,0.0238,0.3036,1,,,,,,,,,true
-,"crossroad",false,false,187,0.0681,0.2422,2,,,,,,,,,true
-,"crossroad",false,false,188,0.1282,0.0024,3,,,,,,,,,true
-,"crossroad",false,false,189,0.0281,0.0007,2,,,,,,,,,true
-,"crossroad",false,false,190,0.0094,0.0002,1,,,,,,,,,true
-,"crossroad",false,false,191,0.0223,0.0016,1,,,,,,,,,true
-,"crossroad",false,false,192,0.0449,0.0014,27,,,,,,,,,true
-,"crossroad",false,false,193,0.0094,0.0222,1,,,,,,,,,true
+,"crossroad",false,false,187,0.0681,0.2422,1,,,,,,,,,true
+,"crossroad",false,false,188,0.1282,0.0024,0,,,,,,,,,true
+,"crossroad",false,false,189,0.0281,0.0007,0,,,,,,,,,true
+,"crossroad",false,false,190,0.0094,0.0002,0,,,,,,,,,true
+,"crossroad",false,false,191,0.0223,0.0016,0,,,,,,,,,true
+,"crossroad",false,false,192,0.0449,0.0014,20,,,,,,,,,true
+,"crossroad",false,false,193,0.0094,0.0222,0,,,,,,,,,true
 ,"crossroad",false,false,194,0.0731,0.0005,1,,,,,,,,,true
 ,"crossroad",false,false,195,0.0898,0,4,,,,,,,,,true
 ,"crossroad",false,false,196,0.086,0,3,,,,,,,,,true
-,"crossroad",false,false,197,0.0789,0,8,,,,,,,,,true
-,"crossroad",false,false,198,0.0606,0,7,,,,,,,,,true
+,"crossroad",false,false,197,0.0789,0,4,,,,,,,,,true
+,"crossroad",false,false,198,0.0606,0,4,,,,,,,,,true
 ,"deadend",false,false,199,0,0,0,,,,,,,,,
 ,"deadend",false,false,200,0,0,0,,,,,,,,,
 ,"deadend",false,false,201,0,0,0,,,,,,,,,
