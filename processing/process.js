@@ -492,6 +492,13 @@ nodes
       politics.features.filter(f => f.properties.military)
     ).distance;
 
+    node.properties.politicsNonMilitaryCertain = closestPoi(
+      node,
+      politics.features
+        .filter(f => !f.properties.military)
+        .filter(f => f.properties.certain)
+    ).distance;
+
     node.properties.politicsAllCertain = closestPoi(
       node,
       politics.features.filter(f => f.properties.certain)
