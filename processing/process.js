@@ -504,6 +504,11 @@ nodes
       politics.features.filter(f => f.properties.certain)
     ).distance;
 
+    node.properties.portDistance = closestPoi(
+      node,
+      nodes.filter(n => n.properties.port)
+    ).distance;
+
     node.properties.alexandria = round(
       distanceOnNetwork(alexandriaId, node.properties.id)
     );

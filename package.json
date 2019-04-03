@@ -5,7 +5,8 @@
   "repository": "git@github.com:adammertel/gehir.isis-network.git",
   "author": "adammertel <mertel.adam@gmail.com>",
   "scripts": {
-    "start": "light-server -o -s ./ -w './data/**.geojson, ./**.**, ./index.html'"
+    "start": "light-server -o -s ./ -w './data/**.geojson, ./**.**, ./index.html'",
+    "process": "node processing/process.js"
   },
   "license": "MIT",
   "dependencies": {
