@@ -1,7 +1,7 @@
 var gdal = require("gdal");
 var turf = require("turf");
 
-var dataset = gdal.open("./../data/elevation/srtm.tif");
+var dataset = gdal.open("./../data/srtm-gehir/merged.tiff");
 const band = dataset.bands.get(1);
 const pixels = band.pixels;
 

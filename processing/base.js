@@ -18,7 +18,7 @@ module.exports.round = round = (
   return parseFloat(parseFloat(numberToRound).toFixed(floatingPoint));
 };
 
-const path = "./../data/";
+const path = "./data/";
 module.exports.readJSON = fileName => {
   const dataset = JSON.parse(
     fs.readFileSync(path + fileName + ".geojson", "utf8")
