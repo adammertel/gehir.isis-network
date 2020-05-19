@@ -58,6 +58,6 @@
 { "type": "Feature", "properties": { "title": "Tlos", "title-display": "Tlos" }, "geometry": { "type": "Point", "coordinates": [ 29.42687, 36.55251 ] } },
 { "type": "Feature", "properties": { "title": "Tripolis ad Maeandrum\/Apollonia ad Maeandrum\/Antoniopolis", "title-display": "Tripolis ad Maeandrum" }, "geometry": { "type": "Point", "coordinates": [ 28.96088, 38.05047 ] } },
 { "type": "Feature", "properties": { "title": "Xanthos", "title-display": "Xanthos" }, "geometry": { "type": "Point", "coordinates": [ 29.31836, 36.35593 ] } },
-{ "type": "Feature", "properties": { "title": "Rhodes, Akantia", "title-display": "Rhodes, Akantia" }, "geometry": { "type": "Point", "coordinates": [ 28.22761, 36.44311 ] } }
+{ "type": "Feature", "properties": { "title": "Rhodes, Akantia", "title-display": "Rhodes" }, "geometry": { "type": "Point", "coordinates": [ 28.22761, 36.44311 ] } }
 ]
 }
